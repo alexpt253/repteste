@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION summary.fn_load_tb_policy (IN batch_name text , IN batch_number integer
+CREATE OR REPLACE FUNCTION summarization.fn_load_tb_policy (IN batch_name text , IN batch_number integer
 
                                                 , IN batch_from_timestamp timestamp without time zone, IN batch_to_timestamp timestamp without time zone
 
@@ -34,7 +34,7 @@ BEGIN
 
 --call the generic function fn_apply_delta by passing source and target tables as parameters
 
-execute 'select  out_function_status, out_function_error_message from integration.fn_apply_delta_scd2(''' || batch_name || ''',' || batch_number || ',''' ||source_table_name  || ''','''  || target_table_name ||    ''')' 
+execute 'select  out_function_status, out_function_error_message from summarization.fn_apply_delta_scd2(''' || batch_name || ''',' || batch_number || ',''' ||source_table_name  || ''','''  || target_table_name ||    ''')' 
 
           into function_return_results;
 
