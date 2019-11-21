@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION source.fn_load_tb_earnix_policy_stg(IN batch_name text, IN batch_number integer, IN batch_from_timestamp timestamp without time zone, IN batch_to_timestamp timestamp without time zone
+CREATE OR REPLACE FUNCTION summary.fn_load_tb_policy_stg(IN batch_name text, IN batch_number integer, IN batch_from_timestamp timestamp without time zone, IN batch_to_timestamp timestamp without time zone
 
                                                            ,OUT out_function_status text, OUT out_function_error_message text)
 
@@ -14,11 +14,11 @@ BEGIN
 
 --the function should get batch name as input parameter and based on that the partition should be dropped
 
-execute 'alter table source.tb_earnix_policy_stg truncate partition ' || batch_name ;
+execute 'alter table summary.tb_policy_stg truncate partition ' || batch_name ;
 
 
 
-INSERT INTO source.tb_earnix_policy_stg ( 
+INSERT INTO summary.tb_earnix_policy_stg ( 
 
       policy_business_key
 
