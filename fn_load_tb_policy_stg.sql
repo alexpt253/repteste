@@ -18,7 +18,7 @@ execute 'alter table summary.tb_policy_stg truncate partition ' || batch_name ;
 
 
 
-INSERT INTO summary.tb_earnix_policy_stg ( 
+INSERT INTO summary.tb_policy_stg ( 
 
       policy_business_key
 
