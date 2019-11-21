@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION integration.fn_load_tb_dim_policy (IN batch_name text , IN batch_number integer
+CREATE OR REPLACE FUNCTION integration.fn_load_tb_earnix_policy (IN batch_name text , IN batch_number integer
 
                                                 , IN batch_from_timestamp timestamp without time zone, IN batch_to_timestamp timestamp without time zone
 
@@ -12,9 +12,9 @@ DECLARE
 
 
 
-source_table_name VARCHAR(50) := 'tb_dim_policy_stg';
+source_table_name VARCHAR(50) := 'tb_earnix_policy_stg';
 
-target_table_name VARCHAR(50) := 'tb_dim_policy';
+target_table_name VARCHAR(50) := 'tb_earnix_policy';
 
 
 
