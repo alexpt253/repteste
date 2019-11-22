@@ -9,55 +9,67 @@ BEGIN
 
 
 --the function should get batch name as input parameter and based on that the partition should be dropped
-execute 'alter table summarization.tb_policy_stg truncate partition ' || batch_name ;
+execute 'alter table public.tb_policy_stg truncate partition ' || batch_name ;
 
 
 
 INSERT INTO summarization.tb_policy_stg ( 
      policy_business_key
    , policy_number
-    , policy_status_code
-    , policy_status_desc
-    , policy_status_created_date
-    , policy_inception_date
+--    , policy_status_code
+--    , policy_status_desc
+--    , policy_status_created_date
+--    , policy_inception_date
     , original_policy_inception_date
-    , issue_date
+--    , issue_date
     , term_number
     , term_start_date
     , term_end_date
-    , model_number
+--    , model_number
     , policy_period_edit_effective_date
-    , most_recent_model
-    , term_type_code
-    , term_type_desc
+--    , most_recent_model
+--    , term_type_code
+--    , term_type_desc
     , cancellation_date
-    , cancellation_reason_code
-    , cancellation_reason_desc
-    , billing_method_code
-    , billing_method_desc
-    , primary_insured_name
-    , policy_producer_code
-    , policy_producer_desc
-   , market_segment_code
-    , market_segment_desc
-    , package_risk_code
-    , package_risk_desc
+--    , cancellation_reason_code
+--    , cancellation_reason_desc
+--    , billing_method_code
+--    , billing_method_desc
+--    , primary_insured_name
+--    , policy_producer_code
+--    , policy_producer_desc
+--   , market_segment_code
+--    , market_segment_desc
+--    , package_risk_code
+--    , package_risk_desc
     , product_code
-    , jurisdiction_code
-    , jurisdiction_desc
+--    , jurisdiction_code
+ --   , jurisdiction_desc
     , brand_code
-    , brand_name
-    , non_renewal_reason_code
-    , non_renewal_reason_desc
-    , cancelled_by_name
-    , retired
-    , md_row_effective_date
-    , md_source_system_code
+ --   , brand_name
+ --   , non_renewal_reason_code
+  --  , non_renewal_reason_desc
+  --  , cancelled_by_name
+  --  , retired
+ --   , md_row_effective_date
+ --   , md_source_system_code
 )
 
-
 SELECT 
-WHERE pp.updatetime >= batch_from_timestamp AND   pp.updatetime <= batch_to_timestamp;
+    integrated_dim_policy.policy_business_key,                 
+    integrated_dim_policy.policy_number,  
+    integrated_dim_policy.original_policy_inception_date, 
+    integrated_dim_policy.term_number,
+    integrated_dim_policy.term_start_date,                    
+    integrated_dim_policy.term_end_date,                      
+    integrated_dim_policy.policy_period_edit_effective_date,
+    integrated_dim_policy.cancellation_date,
+    integrated_dim_policy.product_code, 
+    integrated_dim_policy.brand_code                         
+FROM public.integrated_dim_policy
+WHERE md_row_status='A';
+
+--WHERE pp.updatetime >= batch_from_timestamp AND   pp.updatetime <= batch_to_timestamp;
 
 
 out_function_status := 'SUCCESS';
