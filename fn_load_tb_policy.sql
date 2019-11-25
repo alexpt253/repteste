@@ -9,11 +9,11 @@ BEGIN
 
 
 --the function should get batch name as input parameter and based on that the partition should be dropped
-execute 'alter table public.tb_policy_stg truncate partition ' || batch_name ;
+--execute 'alter table public.tb_policy truncate partition ' || batch_name ;
 
+truncate table tb_policy;
 
-
-INSERT INTO summarization.tb_policy_stg ( 
+INSERT INTO tb_policy ( 
      policy_business_key
    , policy_number
 --    , policy_status_code
@@ -66,7 +66,7 @@ SELECT
     tb_dim_policy.cancellation_date,
     tb_dim_policy.product_code, 
     tb_dim_policy.brand_code                         
-FROM public.tb_dim_policy
+FROM tb_dim_policy
 WHERE md_row_status='A';
 
 --WHERE pp.updatetime >= batch_from_timestamp AND   pp.updatetime <= batch_to_timestamp;
