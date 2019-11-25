@@ -15,7 +15,7 @@ truncate table tb_policy;
 
 INSERT INTO tb_policy ( 
      policy_line_id
-   , policy_number
+   , policy_id
 --    , policy_status_code
 --    , policy_status_desc
 --    , policy_status_created_date
