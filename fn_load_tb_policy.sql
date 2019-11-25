@@ -30,7 +30,7 @@ INSERT INTO tb_policy (
 --    , most_recent_model
 --    , term_type_code
 --    , term_type_desc
-    , cancellation_date
+    , cast (cancellation_date as date) as cancellation_date
 --    , cancellation_reason_code
 --    , cancellation_reason_desc
 --    , billing_method_code
