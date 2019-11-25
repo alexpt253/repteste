@@ -16,48 +16,23 @@ BEGIN
 truncate table tb_policy;
 
 INSERT INTO tb_policy ( 
-     policy_line_id
-   , policy_id
---    , policy_status_code
---    , policy_status_desc
---    , policy_status_created_date
---    , policy_inception_date
-    , policy_term_commencement_date
---    , issue_date
-    , policy_term_period
-    , policy_term_start_date
-    , policy_term_expiry_date
---    , model_number
-    , policy_term_effective_date
---    , most_recent_model
---    , term_type_code
---    , term_type_desc
-    ,  cancellation_date
---    , cancellation_reason_code
---    , cancellation_reason_desc
---    , billing_method_code
---    , billing_method_desc
---    , primary_insured_name
---    , policy_producer_code
---    , policy_producer_desc
---   , market_segment_code
---    , market_segment_desc
---    , package_risk_code
---    , package_risk_desc
-    , policy_line_type
---    , jurisdiction_code
- --   , jurisdiction_desc
-    , brand
- --   , brand_name
- --   , non_renewal_reason_code
-  --  , non_renewal_reason_desc
-  --  , cancelled_by_name
-  --  , retired
- --   , md_row_effective_date
- --   , md_source_system_code
+     source_system,
+     policy_line_id,
+     policy_id,
+     policy_term_commencement_date,
+     policy_term_period,
+     policy_term_start_date,
+     policy_term_expiry_date,
+     policy_term_effective_date,
+     cancellation_date,
+     policy_line_type,
+     brand,
+     exposure_start_date,
+     exposure_end_date
 )
 
 SELECT 
+    tb_dim_policy.md_source_system_code,
     tb_dim_policy.policy_business_key,                 
     tb_dim_policy.policy_number,  
     tb_dim_policy.original_policy_inception_date, 
@@ -67,7 +42,9 @@ SELECT
     tb_dim_policy.policy_period_edit_effective_date,
     cast(tb_dim_policy.cancellation_date as date),
     tb_dim_policy.product_code, 
-    tb_dim_policy.brand_code                         
+    tb_dim_policy.brand_code,
+    '2010-01-01',-- exposure start date,
+    '2010-01-01' -- exposure end date
 FROM tb_dim_policy
 WHERE md_row_status='A';
 
