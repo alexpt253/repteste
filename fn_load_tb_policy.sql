@@ -14,19 +14,19 @@ BEGIN
 truncate table tb_policy;
 
 INSERT INTO tb_policy ( 
-     policy_business_key
+     policy_line_id
    , policy_number
 --    , policy_status_code
 --    , policy_status_desc
 --    , policy_status_created_date
 --    , policy_inception_date
-    , original_policy_inception_date
+    , policy_commencement_date
 --    , issue_date
-    , term_number
-    , term_start_date
-    , term_end_date
+    , policy_term_period
+    , policy_term_start_date
+    , policy_term_expiry_date
 --    , model_number
-    , policy_period_edit_effective_date
+    , policy_term_effective_date
 --    , most_recent_model
 --    , term_type_code
 --    , term_type_desc
@@ -42,10 +42,10 @@ INSERT INTO tb_policy (
 --    , market_segment_desc
 --    , package_risk_code
 --    , package_risk_desc
-    , product_code
+    , policy_line_type
 --    , jurisdiction_code
  --   , jurisdiction_desc
-    , brand_code
+    , brand
  --   , brand_name
  --   , non_renewal_reason_code
   --  , non_renewal_reason_desc
