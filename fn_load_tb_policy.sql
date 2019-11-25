@@ -30,7 +30,7 @@ INSERT INTO tb_policy (
 --    , most_recent_model
 --    , term_type_code
 --    , term_type_desc
-    , cast (cancellation_date as date) as cancellation_date
+    ,  cancellation_date
 --    , cancellation_reason_code
 --    , cancellation_reason_desc
 --    , billing_method_code
@@ -63,7 +63,7 @@ SELECT
     tb_dim_policy.term_start_date,                    
     tb_dim_policy.term_end_date,                      
     tb_dim_policy.policy_period_edit_effective_date,
-    tb_dim_policy.cancellation_date,
+    cast(tb_dim_policy.cancellation_date as date),
     tb_dim_policy.product_code, 
     tb_dim_policy.brand_code                         
 FROM tb_dim_policy
