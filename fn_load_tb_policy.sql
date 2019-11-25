@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION fn_load_tb_policy_stg(IN batch_name text, IN batch_number integer, IN batch_from_timestamp timestamp without time zone, IN batch_to_timestamp timestamp without time zone
+CREATE OR REPLACE FUNCTION fn_load_tb_policy(IN batch_name text, IN batch_number integer, IN batch_from_timestamp timestamp without time zone, IN batch_to_timestamp timestamp without time zone
                                                                ,OUT out_function_status text, OUT out_function_error_message text)
 
 
