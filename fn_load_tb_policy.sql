@@ -20,7 +20,7 @@ INSERT INTO tb_policy (
 --    , policy_status_desc
 --    , policy_status_created_date
 --    , policy_inception_date
-    , policy_commencement_date
+    , policy_term_commencement_date
 --    , issue_date
     , policy_term_period
     , policy_term_start_date
