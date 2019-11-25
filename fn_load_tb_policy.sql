@@ -7,6 +7,8 @@ $BODY$
 
 BEGIN
 
+-- Example of how to run this function: 
+-- select * from public.fn_load_tb_policy(cast ('abc' as text),1,cast (now() as timestamp without time zone),cast (now() as timestamp without time zone))
 
 --the function should get batch name as input parameter and based on that the partition should be dropped
 --execute 'alter table public.tb_policy truncate partition ' || batch_name ;
