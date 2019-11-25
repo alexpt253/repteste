@@ -56,17 +56,17 @@ INSERT INTO summarization.tb_policy_stg (
 )
 
 SELECT 
-    integrated_dim_policy.policy_business_key,                 
-    integrated_dim_policy.policy_number,  
-    integrated_dim_policy.original_policy_inception_date, 
-    integrated_dim_policy.term_number,
-    integrated_dim_policy.term_start_date,                    
-    integrated_dim_policy.term_end_date,                      
-    integrated_dim_policy.policy_period_edit_effective_date,
-    integrated_dim_policy.cancellation_date,
-    integrated_dim_policy.product_code, 
-    integrated_dim_policy.brand_code                         
-FROM public.integrated_dim_policy
+    tb_dim_policy.policy_business_key,                 
+    tb_dim_policy.policy_number,  
+    tb_dim_policy.original_policy_inception_date, 
+    tb_dim_policy.term_number,
+    tb_dim_policy.term_start_date,                    
+    tb_dim_policy.term_end_date,                      
+    tb_dim_policy.policy_period_edit_effective_date,
+    tb_dim_policy.cancellation_date,
+    tb_dim_policy.product_code, 
+    tb_dim_policy.brand_code                         
+FROM public.tb_dim_policy
 WHERE md_row_status='A';
 
 --WHERE pp.updatetime >= batch_from_timestamp AND   pp.updatetime <= batch_to_timestamp;
