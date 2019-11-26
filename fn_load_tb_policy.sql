@@ -46,12 +46,12 @@ SELECT
     cast(a.cancellation_date as date),
     a.product_code, 
     a.brand_code,
-    '2010-01-01',-- exposure start date,
-    '2010-01-01' -- exposure end date
-FROM tb_dim_policy a, tb_dim_coverable_personal_motor b, tb_dim_coverage_personal_motor c
-WHERE a.policy_business_key=b.policy_business_key
-AND b.policy_business_key=c.policy_business_key
-AND md_row_status='A';
+    b.personal_motor_effective_date,  
+    c.coverage_effective_date
+FROM tb_dim_policy a 
+LEFT OUTER JOIN tb_dim_coverable_personal_motor b on a.policy_business_key=b.policy_business_key
+LEFT OUTER JOIN tb_dim_coverage_personal_motor c ON b.policy_business_key=c.policy_business_key
+WHERE a.md_row_status='A'
 
 --WHERE pp.updatetime >= batch_from_timestamp AND   pp.updatetime <= batch_to_timestamp;
 
