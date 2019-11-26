@@ -32,21 +32,26 @@ INSERT INTO tb_policy (
 )
 
 SELECT 
-    tb_dim_policy.md_source_system_code,
-    tb_dim_policy.policy_business_key,                 
-    tb_dim_policy.policy_number,  
-    tb_dim_policy.original_policy_inception_date, 
-    tb_dim_policy.term_number,
-    tb_dim_policy.term_start_date,                    
-    tb_dim_policy.term_end_date,                      
-    tb_dim_policy.policy_period_edit_effective_date,
-    cast(tb_dim_policy.cancellation_date as date),
-    tb_dim_policy.product_code, 
-    tb_dim_policy.brand_code,
+    a.md_source_system_code,
+    a.policy_business_key,                 
+    a.policy_number,  
+    a.original_policy_inception_date, 
+    a.term_number,
+    a.term_start_date,                    
+    a.term_end_date,                      
+    a.policy_period_edit_effective_date,
+    cast(a.cancellation_date as date),
+    a.product_code, 
+    a.brand_code,
+    cast(a.cancellation_date as date),
+    a.product_code, 
+    a.brand_code,
     '2010-01-01',-- exposure start date,
     '2010-01-01' -- exposure end date
-FROM tb_dim_policy
-WHERE md_row_status='A';
+FROM tb_dim_policy a, tb_dim_coverable_personal_motor b, tb_dim_coverage_personal_motor c
+WHERE a.policy_business_key=b.policy_business_key
+AND b.policy_business_key=c.policy_business_key
+AND md_row_status='A';
 
 --WHERE pp.updatetime >= batch_from_timestamp AND   pp.updatetime <= batch_to_timestamp;
 
