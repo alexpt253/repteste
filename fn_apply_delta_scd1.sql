@@ -15,7 +15,7 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION fn_apply_delta_scd2(IN batch_name text ,IN batch_number integer , IN source_table_name text,IN target_table_name text, OUT out_function_status text, OUT out_function_error_message text)
+CREATE OR REPLACE FUNCTION fn_apply_delta_scd1(IN batch_name text ,IN batch_number integer , IN source_table_name text,IN target_table_name text, OUT out_function_status text, OUT out_function_error_message text)
 	RETURNS record
 	LANGUAGE plpgsql
 	VOLATILE
