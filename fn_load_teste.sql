@@ -15,7 +15,7 @@ return_error_message text;
 BEGIN
 --call the generic function fn_apply_delta by passing source and target tables as parameters
 
-execute 'select  out_function_status, out_function_error_message from fn_apply_delta_scd2(''' || batch_name || ''',' || batch_number || ',''' ||source_table_name  || ''','''  || target_table_name ||    ''')' 
+execute 'select  out_function_status, out_function_error_message from fn_apply_delta_scd1(''' || batch_name || ''',' || batch_number || ',''' ||source_table_name  || ''','''  || target_table_name ||    ''')' 
           into function_return_results;
 
 return_status := function_return_results.out_function_status;
