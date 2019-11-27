@@ -65,7 +65,7 @@ execute    'INSERT INTO delta_action_scd1 '
 		|| ' else NULL '
 		|| ' end as delta_action'
 		|| ' ,'''|| target_table_name ||''',''' ||  batch_name || '''' 
-		|| ' from ( select '|| business_key || ' as  src_business_key , md_row_effective_date as src_update_time , md5 ( ' || v_hash_col_list || ') as src_hash_key from source.'|| source_table_name	|| ' ) AS src  '  
+		|| ' from ( select '|| business_key || ' as  src_business_key , md_row_effective_date as src_update_time , md5 ( ' || v_hash_col_list || ') as src_hash_key from '|| source_table_name	|| ' ) AS src  '  
 		|| ' left outer join '
 		|| '( select ' || business_key || ' as tgt_business_key , md5(' || v_hash_col_list || ') as tgt_hash_key' || ' from ' || target_table_name		|| '  where md_row_status = ''A'') as tgt '
 		|| ' on src.src_business_key = tgt.tgt_business_key';
