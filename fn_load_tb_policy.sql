@@ -80,7 +80,7 @@ with cte1 as (
       coverage_effective_date, 
       coverage_expiration_date,
       personal_motor_expiry_date,
-      lead(coverage_expiration_date,1) over(order by rank) as next_row_coverage_expiration_date
+      lead(coverage_expiration_date,1) over(partition by policy_business_key order by rank) as next_row_coverage_expiration_date
       from cte4
     )
 
@@ -134,7 +134,7 @@ with cte1 as (
   coverage_expiration_date,
   next_row_coverage_expiration_date,
   personal_motor_expiry_date,
-  lag(exposure_end_date,1) over(order by rank) as previous_row_exposure_end_date,
+  lag(exposure_end_date,1) over(partition by policy_business_key order by rank) as previous_row_exposure_end_date,
   exposure_end_date
   from cte2
 
