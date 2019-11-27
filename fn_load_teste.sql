@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION summarization.fn_load_teste (IN batch_name text , IN batch_number integer
+CREATE OR REPLACE FUNCTION fn_load_teste (IN batch_name text , IN batch_number integer
 
                                                 , IN batch_from_timestamp timestamp without time zone, IN batch_to_timestamp timestamp without time zone
 
@@ -12,9 +12,9 @@ DECLARE
 
 
 
---source_table_name VARCHAR(50) := 'integration_dim_policy';
+source_table_name VARCHAR(50) := 'tb_covarable';
 
---target_table_name VARCHAR(50) := 'tb_policy';
+target_table_name VARCHAR(50) := 'tb_coverable_stg';
 
 
 
@@ -34,20 +34,10 @@ BEGIN
 
 --call the generic function fn_apply_delta by passing source and target tables as parameters
 
---execute 'select  out_function_status, out_function_error_message from summarization.fn_apply_delta_scd2(''' || batch_name || ''',' || batch_number || ',''' ||source_table_name  || ''','''  || target_table_name ||    ''')' 
+execute 'select  out_function_status, out_function_error_message from summarization.fn_apply_delta_scd2(''' || batch_name || ''',' || batch_number || ',''' ||source_table_name  || ''','''  || target_table_name ||    ''')' 
 
---          into function_return_results;
+          into function_return_results;
 
-INSERT INTO public.integration_dim_policy 
-(
-  
-  
-)
-SELECT         
-
-return_status := function_return_results.out_function_status;
-
-return_error_message := function_return_results.out_function_error_message;
 
 
 
