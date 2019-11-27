@@ -6,7 +6,7 @@ $BODY$
 
 DECLARE
 
-source_table_name VARCHAR(50) := 'tb_covarable';
+source_table_name VARCHAR(50) := 'tb_coverable';
 target_table_name VARCHAR(50) := 'tb_dim_coverable';
 function_return_results RECORD;
 return_status text;
