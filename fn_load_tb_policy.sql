@@ -30,6 +30,8 @@ INSERT INTO tb_policy (
   exposure_start_date,
   exposure_end_date
 )
+
+
 with cte1 as (
 
   with cte2 as (
@@ -49,14 +51,15 @@ with cte1 as (
         a.brand_code,
         cast(a.cancellation_date as date) as cancellation_date,
         b.personal_motor_effective_date,  
-        c.coverage_effective_date      
-        coverage_effective_date, 
+        c.coverage_effective_date,      
         coverage_expiration_date,
         personal_motor_expiry_date,
-        rank() over(partition by a.policy_business_key order by coverage_effective_date, coverage_expiration_date, a.policy_business_key)
+        rank() over(partition by a.policy_business_key order by coverage_effective_date, coverage_expiration_date, a.policy_business_key),
+        b.coverable_personal_motor_business_key,
+        c.coverage_personal_motor_business_key
         FROM tb_dim_policy a 
         LEFT OUTER JOIN tb_dim_coverable_personal_motor b on a.policy_business_key=b.policy_business_key
-        LEFT OUTER JOIN tb_dim_coverage_personal_motor c ON b.policy_business_key=c.policy_business_key
+        LEFT OUTER JOIN tb_dim_coverage_personal_motor c ON b.coverable_personal_motor_business_key=c.coverable_personal_motor_business_key   
         WHERE a.md_row_status='A'
         AND b.md_row_status='A'
         AND c.md_row_status='A'
@@ -76,11 +79,12 @@ with cte1 as (
       brand_code,
       cancellation_date,
       personal_motor_effective_date,  
-      coverage_effective_date      
       coverage_effective_date, 
       coverage_expiration_date,
       personal_motor_expiry_date,
-      lead(coverage_expiration_date,1) over(partition by policy_business_key order by rank) as next_row_coverage_expiration_date
+      lead(coverage_expiration_date,1) over(partition by policy_business_key order by rank) as next_row_coverage_expiration_date,
+      coverable_personal_motor_business_key,
+      coverage_personal_motor_business_key
       from cte4
     )
 
@@ -98,7 +102,6 @@ with cte1 as (
     brand_code,
     cancellation_date,
     personal_motor_effective_date,  
-    coverage_effective_date      
     coverage_effective_date, 
     coverage_expiration_date,
     next_row_coverage_expiration_date,
@@ -111,7 +114,9 @@ with cte1 as (
       end
     else
       least(term_end_date,personal_motor_expiry_date, coverage_expiration_date)
-    end as exposure_end_date
+    end as exposure_end_date,
+    coverable_personal_motor_business_key,
+    coverage_personal_motor_business_key
     from cte3
 
   )
@@ -129,13 +134,14 @@ with cte1 as (
   brand_code,
   cancellation_date,
   personal_motor_effective_date,  
-  coverage_effective_date      
   coverage_effective_date, 
   coverage_expiration_date,
   next_row_coverage_expiration_date,
   personal_motor_expiry_date,
   lag(exposure_end_date,1) over(partition by policy_business_key order by rank) as previous_row_exposure_end_date,
-  exposure_end_date
+  exposure_end_date,
+  coverable_personal_motor_business_key,
+  coverage_personal_motor_business_key
   from cte2
 
 )
@@ -154,9 +160,11 @@ select --rank,
   original_policy_inception_date, 
   term_number,
   cancellation_date,
+  --coverable_personal_motor_business_key,
   --personal_motor_effective_date,  
   --next_row_coverage_expiration_date,
   --personal_motor_expiry_date,
+  --coverage_personal_motor_business_key,
   --coverage_effective_date, 
   --coverage_expiration_date,
   case when rank=1 then 
