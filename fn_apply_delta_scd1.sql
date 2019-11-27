@@ -34,7 +34,7 @@ schema_name  text := 'public';
 BEGIN
 
 --delete from table delta action 
-delete from delta_action_scd2 
+delete from delta_action_scd1 
 where table_name = target_table_name
 and batch_name = batch_name;
 
@@ -56,7 +56,7 @@ group by table_name;
 
 
 
-execute    'INSERT INTO delta_action_scd2 '      
+execute    'INSERT INTO delta_action_scd1 '      
 		||'  SELECT src.src_business_key ' 
 		||'  ,src.src_update_time  '
 		|| ' ,case when tgt.tgt_business_key is null then ''INSERT'''
@@ -87,7 +87,7 @@ execute 'insert into '   || target_table_name || ' ( ' || v_insert_col_list
 		|| 'case when coalesce(s.retired,0) <> 0 Then  ''D''	else ''A'' end ,'		
 		||   batch_number || ',' || batch_number || ', now()::timestamp, now()::timestamp '
          	|| ' from public.'	|| source_table_name
-		||' s inner join delta_action_scd2 t on s.' || business_key || ' = t.business_key  and s.md_row_effective_date = t.update_time '
+		||' s inner join delta_action_scd1 t on s.' || business_key || ' = t.business_key  and s.md_row_effective_date = t.update_time '
 		|| ' and t.delta_action in (''INSERT'',''UPDATE'')'
 		|| ' and t.batch_name = ''' || batch_name || ''''
 		|| ' and t.table_name = ''' || target_table_name || ''''
