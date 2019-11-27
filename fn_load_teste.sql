@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION summarization.fn_load_tb_policy (IN batch_name text , IN batch_number integer
+CREATE OR REPLACE FUNCTION summarization.fn_load_teste (IN batch_name text , IN batch_number integer
 
                                                 , IN batch_from_timestamp timestamp without time zone, IN batch_to_timestamp timestamp without time zone
 
