@@ -60,7 +60,7 @@ high_end_date    varchar(20) := '9999-12-31 23:59:59';
 
 active_status	 varchar(1) := 'A';
 
-schema_name  text := 'integration';  
+schema_name  text := 'public';  
 
 
 
@@ -90,7 +90,7 @@ select rtrim(string_agg( 'coalesce(' || column_name || '::TEXT, ''~'')' || ' || 
 
 from information_schema.columns
 
-where table_schema = 'source'        --layer a schema name 'source'
+where table_schema = 'public'        --layer a schema name 'source'
 
 and   table_name = source_table_name    --staging version of the table 'tb_dim_account'
 
@@ -108,7 +108,7 @@ select rtrim(string_agg( column_name || ','  order by column_name) , ',') into v
 
 from information_schema.columns
 
-where table_schema = 'source'          --layer A schema name  'source'
+where table_schema = 'public'          --layer A schema name  'source'
 
 and   table_name = source_table_name   --staging table in layer A 'tb_dim_account_stg'
 
@@ -156,7 +156,7 @@ select rtrim(string_agg( 's.' || column_name || ','  order by column_name) , ','
 
 from information_schema.columns
 
-where table_schema = 'source'        --layer A schema name  'source'
+where table_schema = 'public'        --layer A schema name  'source'
 
 and   table_name = source_table_name   --staging table in layer A 'tb_dim_account_stg'
 
@@ -176,7 +176,7 @@ execute 'insert into '   || target_table_name || ' ( ' || v_insert_col_list
 
 		||   batch_number || ',' || batch_number || ', now()::timestamp, now()::timestamp '
 
-		|| ' from source.'	|| source_table_name
+		|| ' from public.'	|| source_table_name
 
 		||' s inner join delta_action_scd2 t on s.' || business_key || ' = t.business_key  and s.md_row_effective_date = t.update_time '
 
