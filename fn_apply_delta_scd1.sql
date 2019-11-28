@@ -97,7 +97,7 @@ execute 'insert into '   || target_table_name || ' ( ' || v_insert_col_list
 
 				execute 'create table ' || 'Temp_' || batch_name ||'_' || target_table_name 
 				||' as 	Select ' 
-				|| business_key 
+				|| business_key  
 				|| ', md_row_effective_date, md_row_update_audit_key,	(lead(md_row_effective_date) over (partition by ' 
 				|| business_key || ' order by md_row_effective_date)) - interval '||quote_literal('00:00:00.005') ||' as md_row_expiry_date_calc			
 				From  ' || target_table_name || ' 	
