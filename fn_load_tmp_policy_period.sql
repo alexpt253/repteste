@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION fn_load_tb_policy_period(OUT out_function_status text, OUT out_function_error_message text)
+CREATE OR REPLACE FUNCTION fn_load_tmp_policy_period(OUT out_function_status text, OUT out_function_error_message text)
 
 
 RETURNS RECORD AS 
@@ -6,7 +6,7 @@ $BODY$
 
 BEGIN
 
-truncate table tb_policy_period;
+truncate table tmp_policy_period;
 
 with cte1 as (
   select sar_policy as policy_term_number,
@@ -20,7 +20,7 @@ with cte1 as (
   order by policy_term_number, sar_trans_eff_date, sar_expiry_date,sar_transaction, sar_cov_eff_date
 )
 
-INSERT INTO tb_policy_period ( 
+INSERT INTO tmp_policy_period ( 
 policy_term_number,
 coverable_id,
 coverage_id,
