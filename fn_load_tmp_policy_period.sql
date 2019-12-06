@@ -9,39 +9,51 @@ BEGIN
 truncate table tmp_policy_period;
 
 with cte1 as (
-  select sar_policy as policy_term_number,
-  cast (sar_trans_eff_date as date) as sar_trans_eff_date, 
-  cast (sar_expiry_date as date) as sar_expiry_date,
-  cast (sar_cov_eff_date as date) as sar_cov_eff_date,
-  sar_transaction
-  from sor_pms_vsam.sor_rec4514 
-  where substr(sar_policy,1,10)='23A0231594'
-  group by policy_term_number, sar_trans_eff_date, sar_expiry_date, sar_transaction, sar_cov_eff_date
-  order by policy_term_number, sar_trans_eff_date, sar_expiry_date,sar_transaction, sar_cov_eff_date
-)
+  with cte2 as (
 
-INSERT INTO tmp_policy_period ( 
-policy_term_number,
-coverable_id,
-coverage_id,
-policy_period_start,
-policy_period_end,
-flag_active_row 
-)
-
-SELECT policy_term_number,
-case when sar_transaction in ('10','11','12') then sar_trans_eff_date 
+  select sar_policy as policy_term_number, 
+  case when sar_transaction in ('10','11','12') then sar_trans_eff_date 
      else sar_cov_eff_date
      end as policy_period_start,
-case when sar_transaction in ('10','11','12') then sar_expiry_date
+  case when sar_transaction in ('10','11','12') then sar_expiry_date
      else sar_trans_eff_date
      end as policy_period_end,
-case when sar_transaction in ('10','11','12') then 'Y'
-     else 'N'
+  sar_transaction,
+  cast (sar_cov_eff_date as date) as sar_cov_eff_date
+  from sor_pms_vsam.sor_rec4514
+--  where substr(sar_policy,1,10) in ('23A0231594','23A4110689') 
+ -- where substr(sar_policy,1,10) ='23A4110689' 
+  and sar_major_peril <'600'
+  and substr(sar_policy,1,2) = ('23')
+  and sar_type_bureau in ('MV','MO','MD') 
+  and sar_transaction not in ('53','63')
+  group by policy_term_number, policy_period_start, policy_period_end, sar_transaction, sar_cov_eff_date
+  order by policy_term_number, policy_period_start, policy_period_end, sar_transaction, sar_cov_eff_date
+  )
+  
+  select policy_term_number,
+  cast (policy_period_start as date) as policy_period_start,
+  cast (policy_period_end as date) as policy_period_end,
+  sar_cov_eff_date,
+  cast (lag(policy_period_start,1) over(order by policy_term_number, policy_period_start, policy_period_end) as date) as previous_policy_period_start,
+  cast (lag(policy_period_end,1) over(order by policy_term_number, policy_period_start, policy_period_end) as date) as previous_policy_period_end,
+  sar_transaction
+  from cte2
+  order by policy_term_number, policy_period_start, policy_period_end)
+
+select policy_term_number,
+policy_period_start,
+policy_period_end,
+--previous_policy_period_start,
+--previous_policy_period_end,
+case when previous_policy_period_start = policy_period_start AND previous_policy_period_end < policy_period_end then 'N'
+     else 'Y'
      end as flag_active_row
+
 from cte1
-where sar_transaction not in ('53','63')
-order by policy_term_number,policy_period_start;
+order by policy_term_number,policy_period_start, policy_period_end
+
+
 
 out_function_status := 'SUCCESS';
 
