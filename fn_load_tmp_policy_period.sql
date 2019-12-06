@@ -27,7 +27,7 @@ with cte1 as (
   and substr(sar_policy,1,2) = ('23')
   and sar_type_bureau in ('MV','MO','MD') 
   and sar_transaction not in ('53','63')
-  and substr(sar_trans_eff_date,1,4) ='1910'
+  and substr(sar_trans_eff_date,1,2) ='19'
   group by policy_term_number, policy_period_start, policy_period_end, sar_transaction, sar_cov_eff_date
   order by policy_term_number, policy_period_start, policy_period_end, sar_transaction, sar_cov_eff_date
   )
