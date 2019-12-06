@@ -23,10 +23,11 @@ with cte1 as (
   from sor_pms_vsam.sor_rec4514
 --  where substr(sar_policy,1,10) in ('23A0231594','23A4110689') 
  -- where substr(sar_policy,1,10) ='23A4110689' 
-  and sar_major_peril <'600'
+  where sar_major_peril <'600'
   and substr(sar_policy,1,2) = ('23')
   and sar_type_bureau in ('MV','MO','MD') 
   and sar_transaction not in ('53','63')
+  and substr(sar_trans_eff_date,1,4) ='1910'
   group by policy_term_number, policy_period_start, policy_period_end, sar_transaction, sar_cov_eff_date
   order by policy_term_number, policy_period_start, policy_period_end, sar_transaction, sar_cov_eff_date
   )
@@ -51,9 +52,7 @@ case when previous_policy_period_start = policy_period_start AND previous_policy
      end as flag_active_row
 
 from cte1
-order by policy_term_number,policy_period_start, policy_period_end
-
-
+order by policy_term_number,policy_period_start, policy_period_end;
 
 out_function_status := 'SUCCESS';
 
