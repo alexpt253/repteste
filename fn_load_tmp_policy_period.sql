@@ -8,6 +8,14 @@ BEGIN
 
 truncate table tmp_policy_period;
 
+
+INSERT INTO tmp_policy_period (
+policy_term_number,
+policy_period_start,
+policy_period_end,
+flag_active_row
+)
+
 with cte1 as (
   with cte2 as (
 
@@ -42,12 +50,6 @@ with cte1 as (
   from cte2
   order by policy_term_number, policy_period_start, policy_period_end)
 
-INSERT INTO tmp_policy_period (
-policy_term_number,
-policy_period_start,
-policy_period_end,
-flag_active_row
-)
 select policy_term_number,
 policy_period_start,
 policy_period_end,
