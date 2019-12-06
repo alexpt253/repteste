@@ -7,7 +7,7 @@ $BODY$
 BEGIN
 
 -- How to execute: 
--- select * fromfn_load_tmp_policy_period()
+-- select * from fn_load_tmp_policy_period()
 
 truncate table tmp_policy_period;
 
