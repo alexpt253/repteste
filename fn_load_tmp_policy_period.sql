@@ -24,11 +24,14 @@ with cte1 as (
 
   select sar_policy as policy_term_number, 
   case when sar_transaction in ('10','11','12') then sar_trans_eff_date 
-     else sar_cov_eff_date
-     end as policy_period_start,
-  case when sar_transaction in ('10','11','12') then sar_expiry_date
-     else sar_trans_eff_date
-     end as policy_period_end,
+       else sar_cov_eff_date
+       end as policy_period_start,
+ -- case when sar_transaction in ('10','11','12') then sar_expiry_date
+ --    else sar_trans_eff_date
+ --    end as policy_period_end,
+  case when sar_transaction in ('25') then sar_trans_eff_date
+       else sar_expiry_date
+  end as policy_period_end,
   sar_transaction,
   cast (sar_cov_eff_date as date) as sar_cov_eff_date
   from sor_pms_vsam.sor_rec4514
