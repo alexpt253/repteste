@@ -26,12 +26,12 @@ with cte1 as (
   case when sar_transaction in ('10','11','12') then sar_trans_eff_date 
        else sar_cov_eff_date
        end as policy_period_start,
-  case when sar_transaction in ('10','11','12') then sar_expiry_date
-     else sar_trans_eff_date
-     end as policy_period_end,
-  --case when sar_transaction in ('25') then sar_trans_eff_date
-  --     else sar_expiry_date
-  --end as policy_period_end,
+  --case when sar_transaction in ('10','11','12') then sar_expiry_date
+  --   else sar_trans_eff_date
+  --   end as policy_period_end,
+  case when sar_transaction in ('22','25') then sar_trans_eff_date
+       else cast(sar_expiry_date as date)-1
+  end as policy_period_end,
   sar_transaction,
   cast (sar_cov_eff_date as date) as sar_cov_eff_date
   from sor_pms_vsam.sor_rec4514
