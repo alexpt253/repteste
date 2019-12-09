@@ -66,6 +66,7 @@ case when previous_policy_period_start = policy_period_start AND previous_policy
      end as flag_active_row
 
 from cte1
+group by policy_term_number,policy_period_start, policy_period_end, flag_active_row
 order by policy_term_number,policy_period_start, policy_period_end;
 
 out_function_status := 'SUCCESS';
