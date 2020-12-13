@@ -1,0 +1,40 @@
+{
+	"name": "dbalex_cities",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dbalex",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "nu_city",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "no_city",
+				"type": "varchar"
+			},
+			{
+				"name": "cd_state",
+				"type": "char"
+			},
+			{
+				"name": "no_pais",
+				"type": "varchar"
+			},
+			{
+				"name": "pop",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "cities"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
