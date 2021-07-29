@@ -1,0 +1,9 @@
+{
+	"name": "adfalex",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "fbfccd4c-30eb-4dbd-9698-69da931deab3",
+		"tenantId": "5b973f99-77df-4beb-b27d-aa0c70b8482c"
+	}
+}
