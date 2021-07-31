@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "POPULATION.txt",
-				"folderPath": "containeralex"
+				"fileSystem": "containeralex"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
