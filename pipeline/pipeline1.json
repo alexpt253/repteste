@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "db_to_datalake",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -55,11 +55,11 @@
 				]
 			},
 			{
-				"name": "Copy data2",
+				"name": "datalake_to_db",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Copy data1",
+						"activity": "db_to_datalake",
 						"dependencyConditions": [
 							"Succeeded"
 						]
