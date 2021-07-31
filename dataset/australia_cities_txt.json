@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "AUSTRALIA_CITIES.txt",
-				"folderPath": "containeralex"
+				"fileSystem": "containeralex"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
