@@ -1,0 +1,39 @@
+{
+	"name": "australia_cities",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dbalex",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id_city",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "no_country",
+				"type": "varchar"
+			},
+			{
+				"name": "no_city",
+				"type": "varchar"
+			},
+			{
+				"name": "sales",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "dt_update",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "australia_cities"
+		}
+	}
+}
