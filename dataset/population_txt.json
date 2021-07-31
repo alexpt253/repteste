@@ -1,0 +1,32 @@
+{
+	"name": "population_txt",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "containeralex",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "POPULATION.txt",
+				"folderPath": "containeralex"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "ID_CITY",
+				"type": "String"
+			},
+			{
+				"name": "POP",
+				"type": "String"
+			}
+		]
+	}
+}
