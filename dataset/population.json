@@ -1,0 +1,12 @@
+{
+	"name": "population",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dbalex",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
