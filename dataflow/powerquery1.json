@@ -1,0 +1,10 @@
+{
+	"name": "powerquery1",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [],
+			"sinks": []
+		}
+	}
+}
