@@ -1,5 +1,5 @@
 {
-	"name": "australia_cities_txt",
+	"name": "population_txt",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "containeralex",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "AUSTRALIA_CITIES.txt",
+				"fileName": "POPULATION.txt",
 				"fileSystem": "containeralex"
 			},
 			"columnDelimiter": ",",
@@ -24,19 +24,7 @@
 				"type": "String"
 			},
 			{
-				"name": "NO_COUNTRY",
-				"type": "String"
-			},
-			{
-				"name": "NO_CITY",
-				"type": "String"
-			},
-			{
-				"name": "SALES",
-				"type": "String"
-			},
-			{
-				"name": "DT_UPDATE",
+				"name": "POP",
 				"type": "String"
 			}
 		]

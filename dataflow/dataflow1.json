@@ -1,0 +1,45 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "australia_cities_txt",
+						"type": "DatasetReference"
+					},
+					"name": "australiacities"
+				},
+				{
+					"dataset": {
+						"referenceName": "population_txt",
+						"type": "DatasetReference"
+					},
+					"name": "population"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "outputdataflow1",
+						"type": "DatasetReference"
+					},
+					"name": "outputdataflow1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Join1"
+				},
+				{
+					"name": "Filter1"
+				},
+				{
+					"name": "Sort1"
+				}
+			],
+			"script": "source(output(\n\t\tID_CITY as string,\n\t\tNO_COUNTRY as string,\n\t\tNO_CITY as string,\n\t\tSALES as string,\n\t\tDT_UPDATE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> australiacities\nsource(output(\n\t\tID_CITY as string,\n\t\tPOP as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> population\naustraliacities, population join(australiacities@ID_CITY == population@ID_CITY,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> Join1\nJoin1 filter(toInteger(SALES)>50) ~> Filter1\nFilter1 sort(desc(SALES, true)) ~> Sort1\nSort1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> outputdataflow1"
+		}
+	}
+}
