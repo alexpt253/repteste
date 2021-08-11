@@ -22,6 +22,10 @@
 							"parameter1": {
 								"value": "'@{pipeline().TriggerTime}'",
 								"type": "Expression"
+							},
+							"parameter2": {
+								"value": "'@{pipeline().parameters.parm1}'",
+								"type": "Expression"
 							}
 						}
 					},
