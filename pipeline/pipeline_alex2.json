@@ -134,8 +134,36 @@
 					"variableName": "var_alex",
 					"value": "true"
 				}
+			},
+			{
+				"name": "Execute Pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "If Condition1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline_alex3",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"parm1": "Testando"
+					}
+				}
 			}
 		],
+		"parameters": {
+			"parm_test1": {
+				"type": "int"
+			}
+		},
 		"variables": {
 			"var_alex": {
 				"type": "String",
