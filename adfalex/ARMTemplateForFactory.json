@@ -1210,8 +1210,36 @@
 							"variableName": "var_alex",
 							"value": "true"
 						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "If Condition1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pipeline_alex3",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"parm1": "Testando"
+							}
+						}
 					}
 				],
+				"parameters": {
+					"parm_test1": {
+						"type": "int"
+					}
+				},
 				"variables": {
 					"var_alex": {
 						"type": "String",
@@ -1221,10 +1249,129 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipeline_alex3')]",
 				"[concat(variables('factoryId'), '/datasets/population_txt')]",
 				"[concat(variables('factoryId'), '/datasets/population')]",
 				"[concat(variables('factoryId'), '/datasets/australia_cities_txt')]",
 				"[concat(variables('factoryId'), '/datasets/australia_cities')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_alex3')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow2",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow2",
+								"type": "DataFlowReference",
+								"parameters": {
+									"parameter1": {
+										"value": "'@{pipeline().TriggerTime}'",
+										"type": "Expression"
+									}
+								},
+								"datasetParameters": {
+									"australiacities2": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"parameters": {
+					"parm1": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "australia_cities_txt",
+								"type": "DatasetReference"
+							},
+							"name": "australiacities2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "australia_cities2_txt",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DerivedColumn1"
+						}
+					],
+					"script": "parameters{\n\tparameter1 as string\n}\nsource(output(\n\t\tID_CITY as string,\n\t\tNO_COUNTRY as string,\n\t\tNO_CITY as string,\n\t\tSALES as string,\n\t\tDT_UPDATE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> australiacities2\naustraliacities2 derive(LOAD_DATETIME = $parameter1) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 1) ~> sink1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/australia_cities_txt')]",
+				"[concat(variables('factoryId'), '/datasets/australia_cities2_txt')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities2_txt')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "containeralex"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
 			]
 		}
 	]
