@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "var_alex='true'",
+						"value": "@variables('var_alex').value=\"true\"",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
@@ -152,22 +152,18 @@
 						"referenceName": "pipeline_alex3",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"parm1": "Testando"
-					}
+					"waitOnCompletion": true
 				}
 			}
 		],
 		"parameters": {
 			"parm_test1": {
-				"type": "int"
+				"type": "string"
 			}
 		},
 		"variables": {
 			"var_alex": {
-				"type": "String",
-				"defaultValue": "false"
+				"type": "String"
 			}
 		},
 		"annotations": []
