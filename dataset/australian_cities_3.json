@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "\"sustralian_cities_\" || @utcnow() || \".txt\"",
+					"value": "\"australian_cities_\" || @utcnow() || \".txt\"",
 					"type": "Expression"
 				},
 				"fileSystem": "containeralex"
