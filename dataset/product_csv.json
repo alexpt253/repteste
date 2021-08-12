@@ -10,7 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "product.csv",
+				"fileName": {
+					"value": "@\"product_\" || utcnow() || \".csv\"",
+					"type": "Expression"
+				},
 				"folderPath": "containeralex"
 			},
 			"columnDelimiter": ",",
