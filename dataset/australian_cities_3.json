@@ -5,13 +5,18 @@
 			"referenceName": "containeralex",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"state": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@concat('australian_cities_', formatDateTime(utcnow(), 'yyyyMMdd-HHmmss'),'.txt')",
+					"value": "@concat('australian_cities_', dataset().state, '-', formatDateTime(utcnow(), 'yyyyMMdd-HHmmss'),'.txt')",
 					"type": "Expression"
 				},
 				"fileSystem": "containeralex"
