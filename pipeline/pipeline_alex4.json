@@ -17,6 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@select * from australia_cities where dt_update >=pipeline().parameters.dt_update",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -313,6 +317,9 @@
 		],
 		"parameters": {
 			"state": {
+				"type": "string"
+			},
+			"dt_update": {
 				"type": "string"
 			}
 		},
