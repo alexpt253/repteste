@@ -7,6 +7,9 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": "australia_cities2"
+		}
 	}
 }
