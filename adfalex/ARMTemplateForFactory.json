@@ -1423,60 +1423,72 @@
 								"mappings": [
 									{
 										"source": {
-											"name": "id_city",
+											"name": "ID_CITY",
 											"type": "String",
 											"physicalType": "nvarchar"
 										},
 										"sink": {
-											"name": "id_city",
+											"name": "ID_CITY",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "no_country",
+											"name": "NO_COUNTRY",
 											"type": "String",
 											"physicalType": "nvarchar"
 										},
 										"sink": {
-											"name": "no_country",
+											"name": "NO_COUNTRY",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "no_city",
+											"name": "NO_CITY",
 											"type": "String",
 											"physicalType": "nvarchar"
 										},
 										"sink": {
-											"name": "no_city",
+											"name": "NO_CITY",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "sales",
+											"name": "NO_STATE",
 											"type": "String",
 											"physicalType": "nvarchar"
 										},
 										"sink": {
-											"name": "sales",
+											"name": "NO_STATE",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "dt_update",
+											"name": "SALES",
 											"type": "String",
 											"physicalType": "nvarchar"
 										},
 										"sink": {
-											"name": "dt_update",
+											"name": "SALES",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DT_UPDATE",
+											"type": "String",
+											"physicalType": "nvarchar"
+										},
+										"sink": {
+											"name": "DT_UPDATE",
 											"type": "String",
 											"physicalType": "String"
 										}
