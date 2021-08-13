@@ -9,7 +9,8 @@
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "australia_cities2"
+			"schema": "dbo",
+			"table": "australia_cities2"
 		}
 	}
 }
