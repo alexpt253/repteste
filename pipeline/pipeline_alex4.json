@@ -156,8 +156,9 @@
 						"mappings": [
 							{
 								"source": {
+									"name": "ID_CITY",
 									"type": "String",
-									"ordinal": 1
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "ID_CITY",
@@ -167,8 +168,9 @@
 							},
 							{
 								"source": {
+									"name": "POP",
 									"type": "String",
-									"ordinal": 2
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "POP",
