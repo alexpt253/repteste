@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@concat('australian_cities_', formatDateTime(utcnow(), 'yyyy-dd-MM'))",
+					"value": "@concat('australian_cities_', formatDateTime(utcnow(), 'yyyy-dd-MM'),'txt')",
 					"type": "Expression"
 				},
 				"fileSystem": "containeralex"
