@@ -818,7 +818,7 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": {
-									"value": "@select * from australia_cities2 where no_state=pipeline().parameters.state",
+									"value": "select * from dbo.australia_cities2 where no_state=pipeline().parameters.state",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
