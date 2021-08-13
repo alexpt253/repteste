@@ -1,0 +1,12 @@
+{
+	"name": "australia_cities2_db",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dbalex",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
