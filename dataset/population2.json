@@ -1,0 +1,30 @@
+{
+	"name": "population2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "containeralex",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"state": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat('POPULATION_', dataset().state,'.txt')",
+					"type": "Expression"
+				},
+				"fileSystem": "containeralex"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
