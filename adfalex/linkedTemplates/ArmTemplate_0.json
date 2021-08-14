@@ -116,6 +116,80 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "AUSTRALIA_CITIES2.txt",
+						"fileSystem": "containeralex"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ID_CITY",
+						"type": "String"
+					},
+					{
+						"name": "NO_COUNTRY",
+						"type": "String"
+					},
+					{
+						"name": "NO_CITY",
+						"type": "String"
+					},
+					{
+						"name": "NO_STATE",
+						"type": "String"
+					},
+					{
+						"name": "SALES",
+						"type": "String"
+					},
+					{
+						"name": "DT_UPDATE",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities2_db')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dbalex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "australia_cities2"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dbalex')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/australia_cities2_txt')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -192,6 +266,71 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/australian_cities_3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"state": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('australian_cities_', dataset().state, '-', formatDateTime(utcnow(), 'yyyyMMdd-HHmmss'),'.txt')",
+							"type": "Expression"
+						},
+						"fileSystem": "containeralex"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ID_CITY",
+						"type": "String"
+					},
+					{
+						"name": "NO_COUNTRY",
+						"type": "String"
+					},
+					{
+						"name": "NO_CITY",
+						"type": "String"
+					},
+					{
+						"name": "SALES",
+						"type": "String"
+					},
+					{
+						"name": "DT_UPDATE",
+						"type": "String"
+					},
+					{
+						"name": "LOAD_DATETIME",
+						"type": "String"
+					},
+					{
+						"name": "USER",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/outputdataflow1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -231,6 +370,42 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/dbalex')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/population2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"state": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('POPULATION_', dataset().state,'.txt')",
+							"type": "Expression"
+						},
+						"fileSystem": "containeralex"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
 			]
 		},
 		{
@@ -532,7 +707,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/australian_cities_3')]",
+			"name": "[concat(parameters('factoryName'), '/productcategory_csv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -540,85 +715,12 @@
 					"referenceName": "containeralex",
 					"type": "LinkedServiceReference"
 				},
-				"parameters": {
-					"state": {
-						"type": "string"
-					}
-				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('australian_cities_', dataset().state, '-', formatDateTime(utcnow(), 'yyyyMMdd-HHmmss'),'.txt')",
-							"type": "Expression"
-						},
-						"fileSystem": "containeralex"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "ID_CITY",
-						"type": "String"
-					},
-					{
-						"name": "NO_COUNTRY",
-						"type": "String"
-					},
-					{
-						"name": "NO_CITY",
-						"type": "String"
-					},
-					{
-						"name": "SALES",
-						"type": "String"
-					},
-					{
-						"name": "DT_UPDATE",
-						"type": "String"
-					},
-					{
-						"name": "LOAD_DATETIME",
-						"type": "String"
-					},
-					{
-						"name": "USER",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/population2')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "containeralex",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"state": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('POPULATION_', dataset().state,'.txt')",
-							"type": "Expression"
-						},
+						"fileName": "containeralex.txt",
 						"fileSystem": "containeralex"
 					},
 					"columnDelimiter": ",",
@@ -630,170 +732,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/australia_cities2')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "containeralex",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "AUSTRALIA_CITIES2.txt",
-						"fileSystem": "containeralex"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "ID_CITY",
-						"type": "String"
-					},
-					{
-						"name": "NO_COUNTRY",
-						"type": "String"
-					},
-					{
-						"name": "NO_CITY",
-						"type": "String"
-					},
-					{
-						"name": "NO_STATE",
-						"type": "String"
-					},
-					{
-						"name": "SALES",
-						"type": "String"
-					},
-					{
-						"name": "DT_UPDATE",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/australia_cities2_db')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "dbalex",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "australia_cities2"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/dbalex')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "australia_cities_txt",
-								"type": "DatasetReference"
-							},
-							"name": "australiacities"
-						},
-						{
-							"dataset": {
-								"referenceName": "population_txt",
-								"type": "DatasetReference"
-							},
-							"name": "population"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "outputdataflow1",
-								"type": "DatasetReference"
-							},
-							"name": "outputdataflow1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "Join1"
-						},
-						{
-							"name": "Filter1"
-						},
-						{
-							"name": "Sort1"
-						}
-					],
-					"script": "source(output(\n\t\tID_CITY as string,\n\t\tNO_COUNTRY as string,\n\t\tNO_CITY as string,\n\t\tSALES as string,\n\t\tDT_UPDATE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> australiacities\nsource(output(\n\t\tID_CITY as string,\n\t\tPOP as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> population\naustraliacities, population join(australiacities@ID_CITY == population@ID_CITY,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> Join1\nJoin1 filter(toInteger(SALES)>50) ~> Filter1\nFilter1 sort(desc(SALES, true)) ~> Sort1\nSort1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> outputdataflow1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/australia_cities_txt')]",
-				"[concat(variables('factoryId'), '/datasets/population_txt')]",
-				"[concat(variables('factoryId'), '/datasets/outputdataflow1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dataflow2')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "australia_cities_txt",
-								"type": "DatasetReference"
-							},
-							"name": "australiacities2"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "australia_cities2_txt",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "DerivedColumn1"
-						}
-					],
-					"script": "parameters{\n\tparameter1 as string,\n\tparameter2 as string\n}\nsource(output(\n\t\tID_CITY as string,\n\t\tNO_COUNTRY as string,\n\t\tNO_CITY as string,\n\t\tSALES as string,\n\t\tDT_UPDATE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> australiacities2\naustraliacities2 derive(LOAD_DATETIME = $parameter1,\n\t\tUSER = $parameter2) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 1) ~> sink1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/australia_cities_txt')]",
-				"[concat(variables('factoryId'), '/datasets/australia_cities2_txt')]"
 			]
 		},
 		{
@@ -1214,13 +1152,190 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Copy data2",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "ProductCategoryID",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "ProductCategoryID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ParentProductCategoryID",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "ParentProductCategoryID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Name",
+											"type": "String",
+											"physicalType": "nvarchar"
+										},
+										"sink": {
+											"name": "Name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "rowguid",
+											"type": "Guid",
+											"physicalType": "uniqueidentifier"
+										},
+										"sink": {
+											"name": "rowguid",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ModifiedDate",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "ModifiedDate",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "productcategory",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "productcategory_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/australia_cities2')]",
-				"[concat(variables('factoryId'), '/datasets/australia_cities2_db')]"
+				"[concat(variables('factoryId'), '/datasets/australia_cities2_db')]",
+				"[concat(variables('factoryId'), '/datasets/productcategory')]",
+				"[concat(variables('factoryId'), '/datasets/productcategory_csv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "australia_cities_txt",
+								"type": "DatasetReference"
+							},
+							"name": "australiacities"
+						},
+						{
+							"dataset": {
+								"referenceName": "population_txt",
+								"type": "DatasetReference"
+							},
+							"name": "population"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "outputdataflow1",
+								"type": "DatasetReference"
+							},
+							"name": "outputdataflow1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Join1"
+						},
+						{
+							"name": "Filter1"
+						},
+						{
+							"name": "Sort1"
+						}
+					],
+					"script": "source(output(\n\t\tID_CITY as string,\n\t\tNO_COUNTRY as string,\n\t\tNO_CITY as string,\n\t\tSALES as string,\n\t\tDT_UPDATE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> australiacities\nsource(output(\n\t\tID_CITY as string,\n\t\tPOP as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> population\naustraliacities, population join(australiacities@ID_CITY == population@ID_CITY,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> Join1\nJoin1 filter(toInteger(SALES)>50) ~> Filter1\nFilter1 sort(desc(SALES, true)) ~> Sort1\nSort1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> outputdataflow1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/australia_cities_txt')]",
+				"[concat(variables('factoryId'), '/datasets/population_txt')]",
+				"[concat(variables('factoryId'), '/datasets/outputdataflow1')]"
 			]
 		}
 	]
