@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "productcategory_csv",
+						"referenceName": "productcategory2_csv",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
