@@ -720,7 +720,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "containeralex.txt",
+						"fileName": "PRODUCTCATEGORY.txt",
 						"fileSystem": "containeralex"
 					},
 					"columnDelimiter": ",",
