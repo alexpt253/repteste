@@ -440,9 +440,7 @@
 								"parameters": {}
 							},
 							"fieldList": [
-								"columnCount",
-								"exists",
-								"structure"
+								"columnCount"
 							]
 						}
 					},
@@ -470,17 +468,17 @@
 							"storedProcedureParameters": {
 								"metadata_type": {
 									"value": {
-										"value": "\"structure\"",
+										"value": "column_count",
 										"type": "Expression"
 									},
 									"type": "String"
 								},
 								"object_metadata": {
-									"value": "@activity('Get Metadata1').output.structure",
+									"value": "@activity('Get Metadata1').output.columnCount",
 									"type": "String"
 								},
 								"object_name": {
-									"value": "\"australia_cicies\"",
+									"value": "\"australia_cities\"",
 									"type": "String"
 								}
 							}
