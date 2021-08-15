@@ -57,17 +57,20 @@
 					"storedProcedureParameters": {
 						"metadata_type": {
 							"value": {
-								"value": "column_count",
+								"value": "lastModified",
 								"type": "Expression"
 							},
 							"type": "String"
 						},
 						"object_metadata": {
-							"value": "@activity('Get Metadata1').output.columnCount",
+							"value": "@activity('Get Metadata1').output.lastModified",
 							"type": "String"
 						},
 						"object_name": {
-							"value": "australia_cities",
+							"value": {
+								"value": "@activity('Get Metadata1').output.itemName",
+								"type": "Expression"
+							},
 							"type": "String"
 						}
 					}
