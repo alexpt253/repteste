@@ -1,0 +1,23 @@
+{
+	"name": "teste_trigger_txt",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "containeralex",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "teste_trigger.txt",
+				"fileSystem": "containeralex"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
