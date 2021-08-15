@@ -1,5 +1,5 @@
 {
-	"name": "pipeline_alex9",
+	"name": "pipeline_alex10",
 	"properties": {
 		"activities": [
 			{
@@ -16,13 +16,17 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "australia_cities",
+						"referenceName": "australia_cities2",
 						"type": "DatasetReference"
 					},
-					"fieldList": [
-						"columnCount",
-						"exists"
-					]
+					"fieldList": [],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
 				}
 			},
 			{
