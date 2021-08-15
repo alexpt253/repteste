@@ -2537,6 +2537,89 @@
 				"[concat(variables('factoryId'), '/datasets/australia_cities_4')]",
 				"[concat(variables('factoryId'), '/datasets/australia_cities2_db')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_alex9')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "australia_cities",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"columnCount",
+								"exists",
+								"structure"
+							]
+						}
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[insert_object_metadata]",
+							"storedProcedureParameters": {
+								"metadata_type": {
+									"value": {
+										"value": "\"structure\"",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"object_metadata": {
+									"value": "@activity('Get Metadata1').output.structure",
+									"type": "String"
+								},
+								"object_name": {
+									"value": "\"australia_cicies\"",
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "dbalex",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/australia_cities')]",
+				"[concat(variables('factoryId'), '/linkedServices/dbalex')]"
+			]
 		}
 	]
 }
