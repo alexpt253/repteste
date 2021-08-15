@@ -58,7 +58,7 @@
 							"type": "String"
 						},
 						"object_name": {
-							"value": "\"australia_cities\"",
+							"value": "australia_cities",
 							"type": "String"
 						}
 					}
