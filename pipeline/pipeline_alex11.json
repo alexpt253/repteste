@@ -3,9 +3,30 @@
 	"properties": {
 		"activities": [
 			{
+				"name": "Validation1",
+				"type": "Validation",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "teste_trigger_txt",
+						"type": "DatasetReference"
+					},
+					"timeout": "7.00:00:00",
+					"sleep": 5
+				}
+			},
+			{
 				"name": "Get Metadata1",
 				"type": "GetMetadata",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Validation1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -20,9 +41,7 @@
 						"type": "DatasetReference"
 					},
 					"fieldList": [
-						"lastModified",
-						"exists",
-						"itemName"
+						"lastModified"
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
@@ -56,10 +75,7 @@
 					"storedProcedureName": "[dbo].[insert_object_metadata]",
 					"storedProcedureParameters": {
 						"metadata_type": {
-							"value": {
-								"value": "lastModified",
-								"type": "Expression"
-							},
+							"value": "lastModified",
 							"type": "String"
 						},
 						"object_metadata": {
@@ -67,10 +83,7 @@
 							"type": "String"
 						},
 						"object_name": {
-							"value": {
-								"value": "@activity('Get Metadata1').output.itemName",
-								"type": "Expression"
-							},
+							"value": "@activity('Get Metadata1').output.itemName",
 							"type": "String"
 						}
 					}
