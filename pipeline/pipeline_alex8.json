@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Data flow 5",
+				"name": "Data flow 6",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,12 +16,14 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow5",
+						"referenceName": "dataflow6",
 						"type": "DataFlowReference",
-						"parameters": {
-							"state": {
-								"value": "'@{pipeline().parameters.state}'",
-								"type": "Expression"
+						"datasetParameters": {
+							"source1": {
+								"state": {
+									"value": "@pipeline().parameters.state",
+									"type": "Expression"
+								}
 							}
 						}
 					},

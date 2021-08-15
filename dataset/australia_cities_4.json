@@ -26,6 +26,27 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "ID_CITY",
+				"type": "String"
+			},
+			{
+				"name": "NO_COUNTRY",
+				"type": "String"
+			},
+			{
+				"name": "NO_CITY",
+				"type": "String"
+			},
+			{
+				"name": "SALES",
+				"type": "String"
+			},
+			{
+				"name": "DT_UPDATE",
+				"type": "String"
+			}
+		]
 	}
 }
