@@ -182,39 +182,12 @@
 							"name": "sink1"
 						}
 					],
-					"transformations": [],
-					"script": "source(output(\n\t\tID_CITY as string,\n\t\tNO_COUNTRY as string,\n\t\tNO_CITY as string,\n\t\tNO_STATE as string,\n\t\tSALES as string,\n\t\tDT_UPDATE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink1"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dataflow6')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
+					"transformations": [
 						{
-							"dataset": {
-								"referenceName": "productcategory",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
+							"name": "AlterRow1"
 						}
 					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "productcategory2_csv",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [],
-					"script": "source(output(\n\t\tProductCategoryID as integer,\n\t\tParentProductCategoryID as integer,\n\t\tName as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['PRODUCTCATEGORY.txt'],\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink1"
+					"script": "source(output(\n\t\tID_CITY as string,\n\t\tNO_COUNTRY as string,\n\t\tNO_CITY as string,\n\t\tNO_STATE as string,\n\t\tSALES as string,\n\t\tDT_UPDATE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 alterRow(upsertIf(true())) ~> AlterRow1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:true,\n\tkeys:['ID_CITY'],\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink1"
 				}
 			},
 			"dependsOn": []
@@ -901,50 +874,12 @@
 							},
 							"traceLevel": "Fine"
 						}
-					},
-					{
-						"name": "Data flow 6",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Data flow 5",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "1.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "dataflow6",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
 					}
 				],
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/dataflow5')]",
-				"[concat(variables('factoryId'), '/dataflows/dataflow6')]"
+				"[concat(variables('factoryId'), '/dataflows/dataflow5')]"
 			]
 		},
 		{
