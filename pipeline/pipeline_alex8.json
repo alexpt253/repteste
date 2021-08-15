@@ -17,7 +17,13 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "dataflow5",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"parameters": {
+							"state": {
+								"value": "'@{pipeline().parameters.state}'",
+								"type": "Expression"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
@@ -27,6 +33,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"state": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
