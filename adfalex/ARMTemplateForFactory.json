@@ -2870,78 +2870,93 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Set variable1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
+						"name": "Until1",
+						"type": "Until",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(int(variables('var_random_num')),95)",
+								"type": "Expression"
 							},
-							{
-								"activity": "Set variable2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[insert_random_number]",
-							"storedProcedureParameters": {
-								"datetime_insert": {
-									"value": {
-										"value": "@variables('var_datetime')",
-										"type": "Expression"
+							"activities": [
+								{
+									"name": "Stored procedure1",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "Set variable1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
+										{
+											"activity": "Set variable2",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
 									},
-									"type": "String"
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[insert_random_number]",
+										"storedProcedureParameters": {
+											"datetime_insert": {
+												"value": {
+													"value": "@variables('var_datetime')",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"random_number": {
+												"value": {
+													"value": "@int(variables('var_random_num'))",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "dbalex",
+										"type": "LinkedServiceReference"
+									}
 								},
-								"random_number": {
-									"value": {
-										"value": "@int(variables('var_random_num'))",
-										"type": "Expression"
-									},
-									"type": "Int32"
+								{
+									"name": "Set variable1",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "var_random_num",
+										"value": {
+											"value": "@string(rand(0,100))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set variable2",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "var_datetime",
+										"value": {
+											"value": "@formatDateTime(utcnow(), 'yyyyMMdd-HHmmss')",
+											"type": "Expression"
+										}
+									}
 								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "dbalex",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Set variable1",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "var_random_num",
-							"value": {
-								"value": "@string(rand(0,100))",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set variable2",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "var_datetime",
-							"value": {
-								"value": "@formatDateTime(utcnow(), 'yyyyMMdd-HHmmss')",
-								"type": "Expression"
-							}
+							],
+							"timeout": "7.00:00:00"
 						}
 					}
 				],
@@ -2950,6 +2965,9 @@
 						"type": "String"
 					},
 					"var_datetime": {
+						"type": "String"
+					},
+					"count": {
 						"type": "String"
 					}
 				},
