@@ -2939,7 +2939,7 @@
 						"typeProperties": {
 							"variableName": "var_datetime",
 							"value": {
-								"value": "formatDateTime(utcnow(), 'yyyyMMdd-HHmmss')",
+								"value": "@formatDateTime(utcnow(), 'yyyyMMdd-HHmmss')",
 								"type": "Expression"
 							}
 						}
