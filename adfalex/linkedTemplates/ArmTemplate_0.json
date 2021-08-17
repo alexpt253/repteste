@@ -217,6 +217,63 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities_4')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"state": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat('australian_cities_', dataset().state,'.txt') ",
+							"type": "Expression"
+						},
+						"fileSystem": "containeralex"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ID_CITY",
+						"type": "String"
+					},
+					{
+						"name": "NO_COUNTRY",
+						"type": "String"
+					},
+					{
+						"name": "NO_CITY",
+						"type": "String"
+					},
+					{
+						"name": "SALES",
+						"type": "String"
+					},
+					{
+						"name": "DT_UPDATE",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/australia_cities_txt')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -707,34 +764,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/productcategory_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "containeralex",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "PRODUCTCATEGORY.txt",
-						"fileSystem": "containeralex"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/productcategory2_csv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -762,7 +791,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/australia_cities_4')]",
+			"name": "[concat(parameters('factoryName'), '/productcategory_csv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -770,20 +799,12 @@
 					"referenceName": "containeralex",
 					"type": "LinkedServiceReference"
 				},
-				"parameters": {
-					"state": {
-						"type": "string"
-					}
-				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat('australian_cities_', dataset().state,'.txt') ",
-							"type": "Expression"
-						},
+						"fileName": "PRODUCTCATEGORY.txt",
 						"fileSystem": "containeralex"
 					},
 					"columnDelimiter": ",",
@@ -791,28 +812,7 @@
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
-				"schema": [
-					{
-						"name": "ID_CITY",
-						"type": "String"
-					},
-					{
-						"name": "NO_COUNTRY",
-						"type": "String"
-					},
-					{
-						"name": "NO_CITY",
-						"type": "String"
-					},
-					{
-						"name": "SALES",
-						"type": "String"
-					},
-					{
-						"name": "DT_UPDATE",
-						"type": "String"
-					}
-				]
+				"schema": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
