@@ -231,7 +231,7 @@
 						"storedProcedureParameters": {
 							"cnt": {
 								"type": "Int32",
-								"value": "0"
+								"value": null
 							}
 						},
 						"queryTimeout": "02:00:00",
