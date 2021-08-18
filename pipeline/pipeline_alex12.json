@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@greater(int(variables('var_random_num')),95)",
+						"value": "@greater(int(variables('var_random_num')),80)",
 						"type": "Expression"
 					},
 					"activities": [
@@ -230,7 +230,8 @@
 						"sqlReaderStoredProcedureName": "[dbo].[num_records_random_number]",
 						"storedProcedureParameters": {
 							"cnt": {
-								"type": "Int32"
+								"type": "Int32",
+								"value": "0"
 							}
 						},
 						"queryTimeout": "02:00:00",
