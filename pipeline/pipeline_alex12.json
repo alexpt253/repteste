@@ -104,7 +104,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "Stored procedure2",
+						"activity": "Lookup1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -113,7 +113,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@greaterOrEquals(activity('Stored procedure2').output,20)",
+						"value": "@greaterOrEquals(activity('Lookup1').output ,20)",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
@@ -186,39 +186,6 @@
 				}
 			},
 			{
-				"name": "Stored procedure2",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "Until1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[num_records_random_number]",
-					"storedProcedureParameters": {
-						"cnt": {
-							"value": "",
-							"type": "Int32"
-						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "dbalex",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
 				"name": "Stored procedure3",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
@@ -236,6 +203,43 @@
 				"linkedServiceName": {
 					"referenceName": "dbalex",
 					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Until1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[num_records_random_number]",
+						"storedProcedureParameters": {
+							"cnt": {
+								"type": "Int32"
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "australia_cities",
+						"type": "DatasetReference"
+					}
 				}
 			}
 		],
