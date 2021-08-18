@@ -230,7 +230,8 @@
 						"sqlReaderStoredProcedureName": "[dbo].[num_records_random_number]",
 						"storedProcedureParameters": {
 							"cnt": {
-								"type": "Int32"
+								"type": "Int32",
+								"value": null
 							}
 						},
 						"queryTimeout": "02:00:00",
