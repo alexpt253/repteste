@@ -1174,7 +1174,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"expression": {
-								"value": "@greaterOrEquals(activity('Lookup1').output ,20)",
+								"value": "@greaterOrEquals(activity('Lookup1').output.firstRow.cnt,20)",
 								"type": "Expression"
 							},
 							"ifFalseActivities": [
@@ -1291,8 +1291,7 @@
 								"sqlReaderStoredProcedureName": "[[dbo].[num_records_random_number]",
 								"storedProcedureParameters": {
 									"cnt": {
-										"type": "Int32",
-										"value": null
+										"type": "Int32"
 									}
 								},
 								"queryTimeout": "02:00:00",
