@@ -3342,7 +3342,7 @@
 								"type": "Expression"
 							},
 							"condition": {
-								"value": "@greater(variables('var_array_rand'),900)",
+								"value": "@greater(int(variables('var_array_rand')),900)",
 								"type": "Expression"
 							}
 						}
