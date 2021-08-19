@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@greater(int(variables('var_random_num')),80)",
+						"value": "@greater(int(variables('var_random_num')),90)",
 						"type": "Expression"
 					},
 					"activities": [
