@@ -1402,7 +1402,7 @@
 								},
 								"outcome": {
 									"value": {
-										"value": "Average random value is: @variables('var_avg_random_num')",
+										"value": "Average random value is: @{variables('var_avg_random_num')}",
 										"type": "Expression"
 									},
 									"type": "String"
