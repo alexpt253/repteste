@@ -32,7 +32,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@variables('var_array_rand')",
+								"value": "@activity('Filter1').output.value",
 								"type": "Expression"
 							},
 							"activities": [
@@ -79,7 +79,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"expression": {
-								"value": "@equals(length(variables('var_array_rand')),10)",
+								"value": "@equals(length(variables('var_array_rand')),100)",
 								"type": "Expression"
 							},
 							"activities": [
