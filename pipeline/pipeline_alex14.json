@@ -63,7 +63,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(length(variables('var_array_rand')),30)",
+						"value": "@equals(length(variables('var_array_rand')),10)",
 						"type": "Expression"
 					},
 					"activities": [
