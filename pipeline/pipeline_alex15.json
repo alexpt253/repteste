@@ -517,52 +517,6 @@
 						"type": "DatasetReference"
 					}
 				]
-			},
-			{
-				"name": "Copy data6",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Copy data5",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "BinarySink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "australia_cities",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "australia_cities_bin",
-						"type": "DatasetReference"
-					}
-				]
 			}
 		],
 		"annotations": []
