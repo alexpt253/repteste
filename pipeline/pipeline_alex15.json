@@ -15,8 +15,90 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"enableStaging": false
-				}
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['Employee_Data'][0]['Id']"
+								},
+								"sink": {
+									"name": "Id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Employee_Data'][0]['Name']"
+								},
+								"sink": {
+									"name": "Name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Employee_Data'][0]['Dep']"
+								},
+								"sink": {
+									"name": "Dep"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Employee_Data'][0]['Salary']"
+								},
+								"sink": {
+									"name": "Salary"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Employee_Data'][0]['Projects'][0]['ProjectId']"
+								},
+								"sink": {
+									"name": "ProjectId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Employee_Data'][0]['Projects'][0]['Role']"
+								},
+								"sink": {
+									"name": "Role"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "employee_data_json",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "employee_data",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"annotations": []
