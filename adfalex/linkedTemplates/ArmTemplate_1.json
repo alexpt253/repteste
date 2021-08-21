@@ -235,6 +235,94 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities_avro')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Avro",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "australia_cities.avro",
+						"fileSystem": "containeralex"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities_orc')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Orc",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "australia_cities.orc",
+						"fileSystem": "containeralex"
+					},
+					"enablePhysicalSchema": true
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities_parquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "australia_cities.parquet",
+						"fileSystem": "containeralex"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities_bin')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "australia_cities.bin",
+						"fileSystem": "containeralex"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pipeline_alex10')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1542,898 +1630,6 @@
 				"annotations": []
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_alex13')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Lookup1",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select avg(random_number) as avg_random_number, min(random_number) as min_random_number, max(random_number) as max_random_number, stdev(random_number) as stdev_random_number from random_number",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "australia_cities",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": true
-						}
-					},
-					{
-						"name": "Set variable1",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Lookup1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "var_avg_random_num",
-							"value": {
-								"value": "@string(activity('Lookup1').output.firstRow.avg_random_number)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Set variable1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[insert_outcome_random_number]",
-							"storedProcedureParameters": {
-								"datetime_insert": {
-									"value": "@formatDateTime(utcnow(), 'yyyyMMdd-HHmmss')",
-									"type": "String"
-								},
-								"outcome": {
-									"value": {
-										"value": "Average random value is: @{variables('var_avg_random_num')}",
-										"type": "Expression"
-									},
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "dbalex",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"variables": {
-					"var_avg_random_num": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_alex15')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"tableOption": "autoCreate",
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "[['Id']"
-										},
-										"sink": {
-											"name": "Id",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"path": "[['Name']"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "[['Dep']"
-										},
-										"sink": {
-											"name": "Dep",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"path": "[['Salary']"
-										},
-										"sink": {
-											"name": "Salary",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"path": "[['Projects'][0]['ProjectId']"
-										},
-										"sink": {
-											"name": "ProjectId",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"path": "[['Projects'][0]['Role']"
-										},
-										"sink": {
-											"name": "Role",
-											"type": "String"
-										}
-									}
-								],
-								"collectionReference": "$['Employee_Data']"
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "employee_data_json",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "employee_data",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Copy data2",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Copy data1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"filePattern": "setOfObjects"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "id_city",
-											"type": "String"
-										},
-										"sink": {
-											"path": "$['id_city']"
-										}
-									},
-									{
-										"source": {
-											"name": "no_country",
-											"type": "String"
-										},
-										"sink": {
-											"path": "$['no_country']"
-										}
-									},
-									{
-										"source": {
-											"name": "no_city",
-											"type": "String"
-										},
-										"sink": {
-											"path": "$['no_city']"
-										}
-									},
-									{
-										"source": {
-											"name": "sales",
-											"type": "String"
-										},
-										"sink": {
-											"path": "$['sales']"
-										}
-									},
-									{
-										"source": {
-											"name": "dt_update",
-											"type": "String"
-										},
-										"sink": {
-											"path": "$['dt_update']"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "australia_cities",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "australia_cities_json",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/employee_data_json')]",
-				"[concat(variables('factoryId'), '/datasets/employee_data')]",
-				"[concat(variables('factoryId'), '/datasets/australia_cities_json')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_alex')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "db_to_datalake",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "ProductID",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "ProductID",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Name",
-											"type": "String",
-											"physicalType": "nvarchar"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ProductNumber",
-											"type": "String",
-											"physicalType": "nvarchar"
-										},
-										"sink": {
-											"name": "ProductNumber",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Color",
-											"type": "String",
-											"physicalType": "nvarchar"
-										},
-										"sink": {
-											"name": "Color",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "StandardCost",
-											"type": "Decimal",
-											"physicalType": "money",
-											"scale": 4,
-											"precision": 19
-										},
-										"sink": {
-											"name": "StandardCost",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ListPrice",
-											"type": "Decimal",
-											"physicalType": "money",
-											"scale": 4,
-											"precision": 19
-										},
-										"sink": {
-											"name": "ListPrice",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Size",
-											"type": "String",
-											"physicalType": "nvarchar"
-										},
-										"sink": {
-											"name": "Size",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Weight",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 2,
-											"precision": 8
-										},
-										"sink": {
-											"name": "Weight",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ProductCategoryID",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "ProductCategoryID",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ProductModelID",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "ProductModelID",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SellStartDate",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										},
-										"sink": {
-											"name": "SellStartDate",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SellEndDate",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										},
-										"sink": {
-											"name": "SellEndDate",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DiscontinuedDate",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										},
-										"sink": {
-											"name": "DiscontinuedDate",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ThumbNailPhoto",
-											"type": "Byte[]",
-											"physicalType": "varbinary"
-										},
-										"sink": {
-											"name": "ThumbNailPhoto",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ThumbnailPhotoFileName",
-											"type": "String",
-											"physicalType": "nvarchar"
-										},
-										"sink": {
-											"name": "ThumbnailPhotoFileName",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "rowguid",
-											"type": "Guid",
-											"physicalType": "uniqueidentifier"
-										},
-										"sink": {
-											"name": "rowguid",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ModifiedDate",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										},
-										"sink": {
-											"name": "ModifiedDate",
-											"type": "String",
-											"physicalType": "String"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "product",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "product_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "datalake_to_db",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "db_to_datalake",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"tableOption": "autoCreate",
-								"disableMetricsCollection": false,
-								"writeBehavior": "insert"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "ID_CITY",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "id_city",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "NO_COUNTRY",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "no_country",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "NO_CITY",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "no_city",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "SALES",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "sales",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "DT_UPDATE",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "dt_update",
-											"type": "DateTime",
-											"physicalType": "date"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "australia_cities_txt",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "australia_cities",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Data flow1",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "datalake_to_db",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "datalake_to_db_2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "1.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "dataflow1",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"australiacities": {},
-									"population": {},
-									"outputdataflow1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "datalake_to_db_2",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "db_to_datalake",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"tableOption": "autoCreate",
-								"disableMetricsCollection": false,
-								"writeBehavior": "insert"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "population_txt",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "population",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_alex3')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Data flow2",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "1.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "dataflow2",
-								"type": "DataFlowReference",
-								"parameters": {
-									"parameter1": {
-										"value": "'@{pipeline().TriggerTime}'",
-										"type": "Expression"
-									},
-									"parameter2": {
-										"value": "'@{pipeline().parameters.parm1}'",
-										"type": "Expression"
-									}
-								},
-								"datasetParameters": {
-									"australiacities2": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"parameters": {
-					"parm1": {
-						"type": "string"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/dataflow2')]"
-			]
 		}
 	]
 }

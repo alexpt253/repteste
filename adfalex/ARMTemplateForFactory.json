@@ -3572,6 +3572,324 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Copy data3",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AvroSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "AvroWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id_city",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['id_city']"
+										}
+									},
+									{
+										"source": {
+											"name": "no_country",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['no_country']"
+										}
+									},
+									{
+										"source": {
+											"name": "no_city",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['no_city']"
+										}
+									},
+									{
+										"source": {
+											"name": "sales",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['sales']"
+										}
+									},
+									{
+										"source": {
+											"name": "dt_update",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['dt_update']"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "australia_cities",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "australia_cities_avro",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data4",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data3",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "OrcSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "OrcWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id_city",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['id_city']"
+										}
+									},
+									{
+										"source": {
+											"name": "no_country",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['no_country']"
+										}
+									},
+									{
+										"source": {
+											"name": "no_city",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['no_city']"
+										}
+									},
+									{
+										"source": {
+											"name": "sales",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['sales']"
+										}
+									},
+									{
+										"source": {
+											"name": "dt_update",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['dt_update']"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "australia_cities",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "australia_cities_orc",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data5",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data4",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id_city",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['id_city']"
+										}
+									},
+									{
+										"source": {
+											"name": "no_country",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['no_country']"
+										}
+									},
+									{
+										"source": {
+											"name": "no_city",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['no_city']"
+										}
+									},
+									{
+										"source": {
+											"name": "sales",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['sales']"
+										}
+									},
+									{
+										"source": {
+											"name": "dt_update",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['dt_update']"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "australia_cities",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "australia_cities_parquet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"annotations": []
@@ -3580,7 +3898,10 @@
 				"[concat(variables('factoryId'), '/datasets/employee_data_json')]",
 				"[concat(variables('factoryId'), '/datasets/employee_data')]",
 				"[concat(variables('factoryId'), '/datasets/australia_cities')]",
-				"[concat(variables('factoryId'), '/datasets/australia_cities_json')]"
+				"[concat(variables('factoryId'), '/datasets/australia_cities_json')]",
+				"[concat(variables('factoryId'), '/datasets/australia_cities_avro')]",
+				"[concat(variables('factoryId'), '/datasets/australia_cities_orc')]",
+				"[concat(variables('factoryId'), '/datasets/australia_cities_parquet')]"
 			]
 		},
 		{
@@ -3685,6 +4006,102 @@
 					}
 				},
 				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities_avro')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Avro",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "australia_cities.avro",
+						"fileSystem": "containeralex"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities_orc')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Orc",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "australia_cities.orc",
+						"fileSystem": "containeralex"
+					},
+					"enablePhysicalSchema": true
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities_parquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "australia_cities.parquet",
+						"fileSystem": "containeralex"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities_bin')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "australia_cities.bin",
+						"fileSystem": "containeralex"
+					}
+				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
