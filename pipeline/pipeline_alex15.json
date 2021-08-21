@@ -37,54 +37,60 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['Employee_Data'][0]['Id']"
+									"path": "['Id']"
 								},
 								"sink": {
-									"name": "Id"
+									"name": "Id",
+									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Employee_Data'][0]['Name']"
+									"path": "['Name']"
 								},
 								"sink": {
-									"name": "Name"
+									"name": "Name",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Employee_Data'][0]['Dep']"
+									"path": "['Dep']"
 								},
 								"sink": {
-									"name": "Dep"
+									"name": "Dep",
+									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Employee_Data'][0]['Salary']"
+									"path": "['Salary']"
 								},
 								"sink": {
-									"name": "Salary"
+									"name": "Salary",
+									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Employee_Data'][0]['Projects'][0]['ProjectId']"
+									"path": "['Projects'][0]['ProjectId']"
 								},
 								"sink": {
-									"name": "ProjectId"
+									"name": "ProjectId",
+									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Employee_Data'][0]['Projects'][0]['Role']"
+									"path": "['Projects'][0]['Role']"
 								},
 								"sink": {
-									"name": "Role"
+									"name": "Role",
+									"type": "String"
 								}
 							}
 						],
-						"collectionReference": ""
+						"collectionReference": "$['Employee_Data']"
 					}
 				},
 				"inputs": [
@@ -96,6 +102,106 @@
 				"outputs": [
 					{
 						"referenceName": "employee_data",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy data2",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"filePattern": "arrayOfObjects"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id_city",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['id_city']"
+								}
+							},
+							{
+								"source": {
+									"name": "no_country",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['no_country']"
+								}
+							},
+							{
+								"source": {
+									"name": "no_city",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['no_city']"
+								}
+							},
+							{
+								"source": {
+									"name": "sales",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['sales']"
+								}
+							},
+							{
+								"source": {
+									"name": "dt_update",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['dt_update']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "australia_cities",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "australia_cities_json",
 						"type": "DatasetReference"
 					}
 				]

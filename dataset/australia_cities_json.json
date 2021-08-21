@@ -1,0 +1,19 @@
+{
+	"name": "australia_cities_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "containeralex",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "australia_cities.json",
+				"fileSystem": "containeralex"
+			}
+		},
+		"schema": {}
+	}
+}
