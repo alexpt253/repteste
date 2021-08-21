@@ -213,6 +213,28 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/australia_cities_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "australia_cities.json",
+						"fileSystem": "containeralex"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pipeline_alex10')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1665,54 +1687,60 @@
 								"mappings": [
 									{
 										"source": {
-											"path": "$['Employee_Data'][0]['Id']"
+											"path": "[['Id']"
 										},
 										"sink": {
-											"name": "Id"
+											"name": "Id",
+											"type": "Int64"
 										}
 									},
 									{
 										"source": {
-											"path": "$['Employee_Data'][0]['Name']"
+											"path": "[['Name']"
 										},
 										"sink": {
-											"name": "Name"
+											"name": "Name",
+											"type": "String"
 										}
 									},
 									{
 										"source": {
-											"path": "$['Employee_Data'][0]['Dep']"
+											"path": "[['Dep']"
 										},
 										"sink": {
-											"name": "Dep"
+											"name": "Dep",
+											"type": "Int64"
 										}
 									},
 									{
 										"source": {
-											"path": "$['Employee_Data'][0]['Salary']"
+											"path": "[['Salary']"
 										},
 										"sink": {
-											"name": "Salary"
+											"name": "Salary",
+											"type": "Int64"
 										}
 									},
 									{
 										"source": {
-											"path": "$['Employee_Data'][0]['Projects'][0]['ProjectId']"
+											"path": "[['Projects'][0]['ProjectId']"
 										},
 										"sink": {
-											"name": "ProjectId"
+											"name": "ProjectId",
+											"type": "Int64"
 										}
 									},
 									{
 										"source": {
-											"path": "$['Employee_Data'][0]['Projects'][0]['Role']"
+											"path": "[['Projects'][0]['Role']"
 										},
 										"sink": {
-											"name": "Role"
+											"name": "Role",
+											"type": "String"
 										}
 									}
 								],
-								"collectionReference": ""
+								"collectionReference": "$['Employee_Data']"
 							}
 						},
 						"inputs": [
@@ -1729,13 +1757,116 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Copy data2",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings",
+									"filePattern": "arrayOfObjects"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id_city",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['id_city']"
+										}
+									},
+									{
+										"source": {
+											"name": "no_country",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['no_country']"
+										}
+									},
+									{
+										"source": {
+											"name": "no_city",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['no_city']"
+										}
+									},
+									{
+										"source": {
+											"name": "sales",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['sales']"
+										}
+									},
+									{
+										"source": {
+											"name": "dt_update",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['dt_update']"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "australia_cities",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "australia_cities_json",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/employee_data_json')]",
-				"[concat(variables('factoryId'), '/datasets/employee_data')]"
+				"[concat(variables('factoryId'), '/datasets/employee_data')]",
+				"[concat(variables('factoryId'), '/datasets/australia_cities_json')]"
 			]
 		},
 		{
@@ -2302,87 +2433,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/dataflow2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_alex6')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Data flow 3",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "1.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "dataflow3",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Data flow 4",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Data flow 3",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "1.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "dataflow4",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/dataflow3')]",
-				"[concat(variables('factoryId'), '/dataflows/dataflow4')]"
 			]
 		}
 	]
