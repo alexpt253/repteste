@@ -1,0 +1,57 @@
+{
+	"name": "employee_data_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "containeralex",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "employee_data.json",
+				"fileSystem": "containeralex"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"Employee_Data": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"Id": {
+								"type": "integer"
+							},
+							"Name": {
+								"type": "string"
+							},
+							"Dep": {
+								"type": "integer"
+							},
+							"Salary": {
+								"type": "integer"
+							},
+							"Projects": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"ProjectId": {
+											"type": "integer"
+										},
+										"Role": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
