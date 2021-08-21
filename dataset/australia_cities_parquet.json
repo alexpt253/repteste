@@ -1,0 +1,20 @@
+{
+	"name": "australia_cities_parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "containeralex",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "australia_cities.parquet",
+				"fileSystem": "containeralex"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}

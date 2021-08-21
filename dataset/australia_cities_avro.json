@@ -1,0 +1,19 @@
+{
+	"name": "australia_cities_avro",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "containeralex",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Avro",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "australia_cities.avro",
+				"fileSystem": "containeralex"
+			}
+		},
+		"schema": {}
+	}
+}

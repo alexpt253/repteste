@@ -1,0 +1,19 @@
+{
+	"name": "australia_cities_orc",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "containeralex",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Orc",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "australia_cities.orc",
+				"fileSystem": "containeralex"
+			},
+			"enablePhysicalSchema": true
+		}
+	}
+}
