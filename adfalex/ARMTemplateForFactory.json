@@ -4135,7 +4135,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "employee_data",
+								"referenceName": "employee_data2_json",
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
@@ -4146,12 +4146,12 @@
 							"name": "Flatten1"
 						}
 					],
-					"script": "source(output(\n\t\tEmployee_Data as (Id as string, Name as string, Dep as string, Salary as string, Projects as (ProjectId as string, Role as string)[])[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> source1\nsource1 foldDown(unroll(),\n\tmapColumn(\n\t\tId = Employee_Data,\n\t\tName = Employee_Data,\n\t\tDep = Employee_Data,\n\t\tSalary = Employee_Data,\n\t\tProjectId = Employee_Data,\n\t\tRole = Employee_Data\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten1\nFlatten1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink1"
+					"script": "source(output(\n\t\tEmployee_Data as (Id as string, Name as string, Dep as string, Salary as string, Projects as (ProjectId as string, Role as string)[])[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> source1\nsource1 foldDown(unroll(Employee_Data),\n\tmapColumn(\n\t\tId = Employee_Data,\n\t\tName = Employee_Data,\n\t\tDep = Employee_Data,\n\t\tSalary = Employee_Data\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten1\nFlatten1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/employee_data_json')]",
-				"[concat(variables('factoryId'), '/datasets/employee_data')]"
+				"[concat(variables('factoryId'), '/datasets/employee_data2_json')]"
 			]
 		},
 		{
@@ -4195,6 +4195,55 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/dataflow7')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/employee_data_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "containeralex"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/employee_data2_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "containeralex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "containeralex"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/containeralex')]"
 			]
 		}
 	]
