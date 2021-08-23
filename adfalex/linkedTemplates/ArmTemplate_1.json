@@ -1350,7 +1350,8 @@
 										}
 									}
 								],
-								"collectionReference": "$['Employee_Data']"
+								"collectionReference": "$['Employee_Data']",
+								"mapComplexValuesToString": false
 							}
 						},
 						"inputs": [
