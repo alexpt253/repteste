@@ -12,17 +12,14 @@
 					"name": "source1"
 				},
 				{
+					"dataset": {
+						"referenceName": "cities_csv",
+						"type": "DatasetReference"
+					},
 					"name": "source2"
 				}
 			],
 			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "goods2_json",
-						"type": "DatasetReference"
-					},
-					"name": "sink1"
-				},
 				{
 					"dataset": {
 						"referenceName": "goods2_csv",
@@ -51,7 +48,7 @@
 					"name": "Lookup1"
 				}
 			],
-			"script": "source(output(\n\t\tImports as (companyname as string, location as string, satellites as string[], goods as (trade as boolean, customers as string[], orders as (orderId as string, orderTotal as double, shipped as (orderItems as (itemName as string, itemQty as string)[]))[]))[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'arrayOfDocuments') ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2\nsource1 foldDown(unroll(Imports.goods.orders.shipped.orderItems),\n\tmapColumn(\n\t\tcompanyname = Imports.companyname,\n\t\tlocation = Imports.location,\n\t\tsatellites = Imports.satellites,\n\t\ttrade = Imports.goods.trade,\n\t\tcustomers = Imports.goods.customers,\n\t\torderId = Imports.goods.orders.orderId,\n\t\torderTotal = Imports.goods.orders.orderTotal,\n\t\titemName = Imports.goods.orders.shipped.orderItems.itemName,\n\t\titemQty = Imports.goods.orders.shipped.orderItems.itemQty\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten1\nLookup1 select(mapColumn(\n\t\tcompanyname,\n\t\tlocation,\n\t\tsatellites,\n\t\ttrade,\n\t\tcustomers,\n\t\torderid,\n\t\torderTotal,\n\t\titemName,\n\t\titemQty\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nFlatten1 foldDown(unroll(satellites),\n\tmapColumn(\n\t\tcompanyname,\n\t\tlocation,\n\t\tsatellites,\n\t\ttrade,\n\t\tcustomers,\n\t\torderId,\n\t\torderTotal,\n\t\titemName,\n\t\titemQty\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten2\nFlatten2 foldDown(unroll(customers),\n\tmapColumn(\n\t\tcompanyname,\n\t\tlocation,\n\t\tsatellites,\n\t\ttrade,\n\t\tcustomers,\n\t\torderid = orderId,\n\t\torderTotal,\n\t\titemName,\n\t\titemQty\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten3\nFlatten3 keyGenerate(output(id as long),\n\tstartAt: 1L) ~> SurrogateKey1\nSurrogateKey1 lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> Lookup1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink2"
+			"script": "source(output(\n\t\tImports as (companyname as string, location as string, satellites as string[], goods as (trade as boolean, customers as string[], orders as (orderId as string, orderTotal as double, shipped as (orderItems as (itemName as string, itemQty as string)[]))[]))[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'arrayOfDocuments') ~> source1\nsource(output(\n\t\tcity as string,\n\t\tstate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source2\nsource1 foldDown(unroll(Imports.goods.orders.shipped.orderItems),\n\tmapColumn(\n\t\tcompanyname = Imports.companyname,\n\t\tlocation = Imports.location,\n\t\tsatellites = Imports.satellites,\n\t\ttrade = Imports.goods.trade,\n\t\tcustomers = Imports.goods.customers,\n\t\torderId = Imports.goods.orders.orderId,\n\t\torderTotal = Imports.goods.orders.orderTotal,\n\t\titemName = Imports.goods.orders.shipped.orderItems.itemName,\n\t\titemQty = Imports.goods.orders.shipped.orderItems.itemQty\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten1\nLookup1 select(mapColumn(\n\t\tcompanyname,\n\t\tlocation,\n\t\tsatellites,\n\t\ttrade,\n\t\tcustomers,\n\t\torderid,\n\t\torderTotal,\n\t\titemName,\n\t\titemQty,\n\t\tid,\n\t\tstate\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nFlatten1 foldDown(unroll(satellites),\n\tmapColumn(\n\t\tcompanyname,\n\t\tlocation,\n\t\tsatellites,\n\t\ttrade,\n\t\tcustomers,\n\t\torderId,\n\t\torderTotal,\n\t\titemName,\n\t\titemQty\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten2\nFlatten2 foldDown(unroll(customers),\n\tmapColumn(\n\t\tcompanyname,\n\t\tlocation,\n\t\tsatellites,\n\t\ttrade,\n\t\tcustomers,\n\t\torderid = orderId,\n\t\torderTotal,\n\t\titemName,\n\t\titemQty\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten3\nFlatten3 keyGenerate(output(id as long),\n\tstartAt: 1L) ~> SurrogateKey1\nSurrogateKey1, source2 lookup(location == city,\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> Lookup1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink2"
 		}
 	}
 }
