@@ -30,7 +30,7 @@
 								"referenceName": "australia_cities2_txt",
 								"type": "DatasetReference"
 							},
-							"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Sinkaustralia_cities2_txt"
+							"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tID_CITY,\n\t\tNO_COUNTRY,\n\t\tNO_CITY,\n\t\tSALES,\n\t\tDT_UPDATE,\n\t\tSALES_PERFORMANCE\n\t)) ~> Sinkaustralia_cities2_txt"
 						}
 					}
 				}
