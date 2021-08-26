@@ -4787,7 +4787,7 @@
 										"type": "DatasetReference",
 										"parameters": {}
 									},
-									"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Sinkaustralia_cities2_txt"
+									"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tID_CITY,\n\t\tNO_COUNTRY,\n\t\tNO_CITY,\n\t\tSALES,\n\t\tDT_UPDATE,\n\t\tSALES_PERFORMANCE\n\t)) ~> Sinkaustralia_cities2_txt"
 								}
 							}
 						}
@@ -4817,7 +4817,7 @@
 							}
 						}
 					],
-					"script": "section Section1;\r\nshared australia_cities_txt = let\r\n  AdfDoc = AzureStorage.DataLakeContents(\"https://storageaccountalexpt253.dfs.core.windows.net/containeralex/AUSTRALIA_CITIES.txt\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]),\r\n  #\"Capitalized each word\" = Table.TransformColumns(PromotedHeaders, {{\"NO_COUNTRY\", each Text.Proper(_), type text}}),\r\n  #\"Capitalized each word 1\" = Table.TransformColumns(#\"Capitalized each word\", {{\"NO_CITY\", each Text.Proper(_), type text}}),\r\n  #\"Changed column type\" = Table.TransformColumnTypes(#\"Capitalized each word 1\", {{\"DT_UPDATE\", type date}, {\"SALES\", Int64.Type}}),\r\n  #\"Inserted conditional column\" = Table.AddColumn(#\"Changed column type\", \"SALES_PERFORMANCE\", each if [SALES] >= 100 then \"HIGH\" else \"LOW\")\r\nin\r\n  #\"Inserted conditional column\";\r\nshared UserQuery = let\r\n  Source = population_txt\r\nin\r\n  Source;\r\n"
+					"script": "section Section1;\r\nshared australia_cities_txt = let\r\n  AdfDoc = AzureStorage.DataLakeContents(\"https://storageaccountalexpt253.dfs.core.windows.net/containeralex/AUSTRALIA_CITIES.txt\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])\r\nin\r\n  PromotedHeaders;\r\nshared UserQuery = let\r\n  Source = australia_cities_txt,\r\n  #\"Capitalized each word\" = Table.TransformColumns(Source, {{\"NO_COUNTRY\", each Text.Proper(_), type text}}),\r\n  #\"Capitalized each word 1\" = Table.TransformColumns(#\"Capitalized each word\", {{\"NO_CITY\", each Text.Proper(_), type text}}),\r\n  #\"Changed column type\" = Table.TransformColumnTypes(#\"Capitalized each word 1\", {{\"SALES\", Int64.Type}, {\"DT_UPDATE\", type date}}),\r\n  #\"Inserted conditional column\" = Table.AddColumn(#\"Changed column type\", \"SALES_PERFORMANCE\", each if [SALES] >= 100 then \"HIGH\" else \"LOW\")\r\nin\r\n  #\"Inserted conditional column\";\r\n"
 				}
 			},
 			"dependsOn": [
