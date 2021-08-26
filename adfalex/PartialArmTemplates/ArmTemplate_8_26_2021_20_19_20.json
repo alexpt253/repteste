@@ -1,0 +1,84 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adfalex"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_alex19')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Power Query1",
+						"type": "ExecuteWranglingDataflow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "powerquery1",
+								"type": "DataFlowReference"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"sinks": {
+								"UserQuery": {
+									"name": "Sinkaustralia_cities2_txt",
+									"dataset": {
+										"referenceName": "australia_cities2_txt",
+										"type": "DatasetReference"
+									},
+									"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Sinkaustralia_cities2_txt"
+								}
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/powerquery1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/powerquery1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "WranglingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"name": "australia_cities_txt",
+							"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~>  australia_cities_txt",
+							"dataset": {
+								"referenceName": "australia_cities_txt",
+								"type": "DatasetReference"
+							}
+						}
+					],
+					"script": "section Section1;\r\nshared australia_cities_txt = let\r\n  AdfDoc = AzureStorage.DataLakeContents(\"https://storageaccountalexpt253.dfs.core.windows.net/containeralex/AUSTRALIA_CITIES.txt\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]),\r\n  #\"Capitalized each word\" = Table.TransformColumns(PromotedHeaders, {{\"NO_COUNTRY\", each Text.Proper(_), type text}}),\r\n  #\"Capitalized each word 1\" = Table.TransformColumns(#\"Capitalized each word\", {{\"NO_CITY\", each Text.Proper(_), type text}}),\r\n  #\"Changed column type\" = Table.TransformColumnTypes(#\"Capitalized each word 1\", {{\"DT_UPDATE\", type date}, {\"SALES\", Int64.Type}}),\r\n  #\"Inserted conditional column\" = Table.AddColumn(#\"Changed column type\", \"SALES_PERFORMANCE\", each if [SALES] >= 100 then \"HIGH\" else \"LOW\")\r\nin\r\n  #\"Inserted conditional column\";\r\nshared UserQuery = let\r\n  Source = population_txt\r\nin\r\n  Source;\r\n"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
